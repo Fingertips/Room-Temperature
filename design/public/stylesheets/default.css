@@ -1,0 +1,82 @@
+body, ul, li, h1, p
+{
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+}
+ul
+{
+  list-style-type: none;
+}
+
+body
+{
+  background-color: #000;
+  color: #fff;
+  font: 18px/1 "HelveticaNeue-Medium", helvetica, arial, sans-serif;
+}
+#column
+{
+  position: relative;
+  max-width: 768px;
+  margin: 0 auto;
+/*  outline: 1px dashed red;*/
+}
+h1,
+label
+{
+  text-align: center;
+  text-transform: uppercase;
+}
+#vote form
+{
+  float: left;
+  width: 100%;
+}
+#vote label 
+{
+  display: block;
+  float: left;
+  width: 20%;
+}
+#vote label div
+{
+  color: #666;
+}
+#vote label.selected div
+{
+  color: #93d;
+}
+#vote label.checked div
+{
+  color: #f3d;
+}
+#vote label.hover div,
+#vote label div:focus
+{
+  outline: 1px dotted grey;
+/*  text-shadow: #fff 0 0 5px, #fff 0 0 20px;*/
+}
+#vote label div:focus
+{
+  outline: none;
+}
+#vote label.active div
+{
+  outline: 1px dotted white;
+/*  text-shadow: #fff 0 0 5px, #fff 0 0 20px, #fff 0 0 80px;*/
+}
+#vote input
+{
+  display: none;
+}
+#vote span
+{
+  display: block;
+}
+#vote span:before
+{
+  content: "★";
+  display: block;
+  font-size: 6em;
+}
