@@ -38,6 +38,7 @@ RT.Updater = Class.create({
       $(document.body).addClassName('loading');
       var id = this.mostRecentMinuteId();
       var url = this.form.getAttribute('action') + '?id=' + id;
+      console.log(url);
       url = url.gsub('?id=', '-');  // TODO For development
       this.request = new Ajax.Request(url, {
         parameters: this.form.serialize(true),
