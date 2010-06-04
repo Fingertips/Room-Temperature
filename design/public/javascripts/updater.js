@@ -20,7 +20,7 @@ RT.Updater = Class.create({
   render: function(json) {
     out = '';  // TODO Find out what's the fastest way to build the html
     json.evalJSON().minutes.each(function(minute) {
-      var timestamp = new Date(parseInt(minute.timestamp, 10));
+      var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
       var minutes = timestamp.getMinutes();
       if (minutes % 15 != 0) {
         timestamp = false;
