@@ -27,7 +27,6 @@ RT.Updater = Class.create({
   
   updateTimer: function(executer) {
     var left = (RT.delay + (this.then - new Date().getTime()) / 1000);
-    // console.log(left);
     if (left > 0) {
       var width = left / RT.delay * 100;
       if (width < 0) {
@@ -39,19 +38,18 @@ RT.Updater = Class.create({
       $(document.body).addClassName('loading');
       var id = this.mostRecentMinuteId();
       var url = this.form.getAttribute('action') + '?id=' + id;
-      url = url.gsub('?id=', '-')
-      // TODO For development
-      console.log(url);
+      url = url.gsub('?id=', '-');  // TODO For development
       this.request = new Ajax.Request(url, {
         parameters: this.form.serialize(true),
         onSuccess: function(response) {
-          // setTimeout(function() {  // TODO For development
-            console.log('hi');
+          if (id == this.mostRecentMinuteId()) {
             this.results.insert({top: response.responseText});
-            this.resetTimer();
-            this.request = false;
-            $(document.body).removeClassName('loading');
-          // }.bind(this), 500);
+          }
+        }.bind(this),
+        onComplete: function(response) {
+          this.resetTimer();
+          this.request = false;
+          $(document.body).removeClassName('loading');
         }.bind(this)
       });
     }
