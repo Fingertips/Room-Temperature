@@ -117,7 +117,11 @@ body.loading #progress
 }
 #results div.m.s
 {
-  border-top: 1px solid red;
+  border-top: 1px dotted #666;
+}
+#results div.m.s.h
+{
+  border-top: 1px dotted #fff;
 }
 #results div.m > div
 {

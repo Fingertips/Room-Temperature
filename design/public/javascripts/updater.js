@@ -21,10 +21,11 @@ RT.Updater = Class.create({
     out = '';  // TODO Find out what's the fastest way to build the html
     json.evalJSON().minutes.each(function(minute) {
       var timestamp = new Date(parseInt(minute.timestamp, 10));
-      if (timestamp.getMinutes() % 15 != 0) {
-        timestamp = false
+      var minutes = timestamp.getMinutes();
+      if (minutes % 15 != 0) {
+        timestamp = false;
       }
-      out += '<div class="m' + (timestamp ? ' s' : '') + '" id="m_' + minute.id + '">\n';
+      out += '<div class="m' + (timestamp ? ' s' : '') + (minutes === 0 ? ' h' : '') + '" id="m_' + minute.id + '">\n';
       minute.stars.each(function(star, index) {
         var width = star * 100;
         var color = 55 + Math.round(star * 200);
@@ -36,7 +37,7 @@ RT.Updater = Class.create({
         out += '</div>\n';
       });
       if (timestamp) {
-        out += '<span class="t" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + timestamp.getMinutes() + '</span>'
+        out += '<span class="t" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (minutes < 10 ? '0' : '') + minutes + '</span>'
       }
       out += '</div>\n';
     });
