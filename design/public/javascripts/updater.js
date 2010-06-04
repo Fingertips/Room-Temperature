@@ -1,6 +1,6 @@
 if (typeof RT == "undefined") RT = {};
 
-RT.delay = 3;
+RT.delay = 10;
 
 RT.Updater = Class.create({
   initialize: function() {
@@ -8,13 +8,44 @@ RT.Updater = Class.create({
     this.progressBar = $('progress').down('div');
     this.results = $('results');
     this.request = false;
-    this.resetTimer();
-    new PeriodicalExecuter(this.updateTimer.bind(this), 1);
+    new Ajax.Request('results', {
+      onSuccess: function(response) {
+        this.render(response.responseText);
+        this.resetTimer();
+        new PeriodicalExecuter(this.updateTimer.bind(this), 1);
+      }.bind(this),
+    });
+  },
+  
+  render: function(json) {
+    out = '';  // TODO Find out what's the fastest way to build the html
+    json.evalJSON().minutes.each(function(minute) {
+      var timestamp = new Date(parseInt(minute.timestamp, 10));
+      if (timestamp.getMinutes() % 15 != 0) {
+        timestamp = false
+      }
+      out += '<div class="m' + (timestamp ? ' s' : '') + '" id="m_' + minute.id + '">\n';
+      minute.stars.each(function(star, index) {
+        var width = star * 100;
+        var color = 55 + Math.round(star * 200);
+        color = color + ',' + color + ',' + color;
+        out += '<div><div style="width: ' + width + '%; background-color: rgb(' + color + ')"></div>';
+        if (index == minute.user) {
+          out += '<span></span>';
+        }
+        out += '</div>\n';
+      });
+      if (timestamp) {
+        out += '<span class="t" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + timestamp.getMinutes() + '</span>'
+      }
+      out += '</div>\n';
+    });
+    // console.log(out);
+    this.results.insert({top: out});
   },
   
   resetTimer: function() {
-    this.progressBar.removeClassName('smooth');
-    this.progressBar.setStyle({width: '100%'});
+    this.progressBar.removeClassName('smooth').setStyle({width: '100%'});
     setTimeout(function() {
       this.progressBar.addClassName('smooth');
       this.then = new Date().getTime();
@@ -38,13 +69,12 @@ RT.Updater = Class.create({
       $(document.body).addClassName('loading');
       var id = this.mostRecentMinuteId();
       var url = this.form.getAttribute('action') + '?id=' + id;
-      console.log(url);
       url = url.gsub('?id=', '-');  // TODO For development
       this.request = new Ajax.Request(url, {
         parameters: this.form.serialize(true),
         onSuccess: function(response) {
           if (id == this.mostRecentMinuteId()) {
-            this.results.insert({top: response.responseText});
+            this.render(response.responseText);
           }
         }.bind(this),
         onComplete: function(response) {
@@ -54,7 +84,7 @@ RT.Updater = Class.create({
         }.bind(this)
       });
     }
-  }
+  },
 });
 
 new RT.Updater();
