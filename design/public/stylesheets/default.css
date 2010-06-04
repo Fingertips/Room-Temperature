@@ -33,9 +33,11 @@ label
   float: left;
   width: 100%;
 }
-#vote form.submitting
+body.loading #vote form,
+body.loading #progress
 {
   opacity: 0.5;
+  -webkit-transition: opacity .5s linear;
 }
 #vote label 
 {
@@ -73,7 +75,7 @@ label
 }
 #vote input
 {
-/*  display: none;*/
+  display: none;
 }
 #vote span
 {
@@ -84,4 +86,22 @@ label
   content: "★";
   display: block;
   font-size: 6em;
+}
+#progress
+{
+  clear: both;
+  width: 90%;
+  margin: 0 auto;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#fff));
+  -webkit-mask-box-image: url(images/progress_mask.png) 4 4 4 4 stretch;
+}
+#progress div
+{
+  height: 10px;
+  width: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#6c6), to(#393));
+}
+#progress div.smooth
+{
+  -webkit-transition: width .1s linear;
 }
