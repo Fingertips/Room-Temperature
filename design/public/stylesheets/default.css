@@ -107,7 +107,7 @@ body.loading #progress
 {
   -webkit-transition: width .1s linear;
 }
-#results div.m
+#results div.minute
 {
   position: relative;
   clear: both;
@@ -115,28 +115,28 @@ body.loading #progress
   width: 100%;
 /*  outline: 1px dashed red;*/
 }
-#results div.m.s
+#results div.separator
 {
   border-top: 1px dotted #666;
 }
-#results div.m.s.h
+#results div.hour
 {
   border-top: 1px dotted #fff;
 }
-#results div.m > div
+#results div.minute > div
 {
   position: relative;
   float: left;
   width: 20%;
 /*  outline: 1px dashed green;*/
 }
-#results div.m > div div
+#results div.minute > div div
 {
   height: 4px;
   margin: 0 auto;
   background-color: #fff;
 }
-#results div.m > div span:before
+#results div.minute > div span:before
 {
   z-index: 1;
   content: "☆";
@@ -148,7 +148,7 @@ body.loading #progress
   color: green;
   text-align: center;
 }
-#results div.m span.t
+#results div.minute span.timestamp
 {
   position: absolute;
   top: 0px;

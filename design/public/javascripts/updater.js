@@ -25,7 +25,7 @@ RT.Updater = Class.create({
       if (minutes % 15 != 0) {
         timestamp = false;
       }
-      out += '<div class="m' + (timestamp ? ' s' : '') + (minutes === 0 ? ' h' : '') + '" id="m_' + minute.id + '">\n';
+      out += '<div class="minute' + (timestamp ? ' separator' : '') + (minutes === 0 ? ' hour' : '') + '" id="minute_' + minute.id + '">\n';
       minute.stars.each(function(star, index) {
         var width = star * 100;
         var color = 55 + Math.round(star * 200);
@@ -37,7 +37,7 @@ RT.Updater = Class.create({
         out += '</div>\n';
       });
       if (timestamp) {
-        out += '<span class="t" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (minutes < 10 ? '0' : '') + minutes + '</span>'
+        out += '<span class="timestamp" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (minutes < 10 ? '0' : '') + minutes + '</span>'
       }
       out += '</div>\n';
     });
@@ -54,7 +54,7 @@ RT.Updater = Class.create({
   },
   
   mostRecentMinuteId: function() {
-    return this.results.down('div.m').id.substring(2);
+    return this.results.down('div.minute').id.substring(7);
   },
   
   updateTimer: function(executer) {
