@@ -63,8 +63,8 @@ RT.Updater = Class.create({
     } else if (!this.request) {
       this.progressBar.setStyle({width: '0'});
       $(document.body).addClassName('loading');
-      var url = this.form.getAttribute('action') + '?latest=' + this.latest;
-      url = url.gsub('?latest=', '-');  // TODO For development
+      var url = this.form.getAttribute('action') + '?since=' + this.latest;
+      url = url.gsub('?since=', '-');  // TODO For development
       var latest = this.latest;
       this.request = new Ajax.Request(url, {
         parameters: this.form.serialize(true),
