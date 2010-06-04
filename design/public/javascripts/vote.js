@@ -3,7 +3,8 @@ if (typeof RT == "undefined") RT = {};
 RT.Vote = Class.create({
   initialize: function() {
     this.form = $('vote').down('form');
-    // this.setChecked();
+    this.timer = $('timer');
+    // this.updateChecked();
     S2.UI.disableTextSelection($('vote'));
     this.addObservers();
   },
@@ -22,11 +23,39 @@ RT.Vote = Class.create({
       this.form.on('touchstart', 'label', this.touchstart.bind(this));
       this.form.on('touchmove', 'label', this.touchmove.bind(this));
       this.form.on('touchend', 'label', this.touchend.bind(this));
-      this.form.on('touchcancel', 'label', function() { alert('cancel'); });
+      // this.form.on('touchcancel', 'label', function() { alert('cancel'); });
     }
   },
   
-  setChecked: function() {
+  submit: function() {
+    this.form.addClassName('submitting');  // TODO actually disable.
+    this.form.request();
+    this.startTimer();
+  },
+  
+  startTimer: function() {
+    var seconds = 2;
+    this.updateTimer(seconds);
+    this.timer.show();
+    new PeriodicalExecuter(function(executer) {
+      seconds = seconds - 1;
+      if (seconds > 0) {
+        this.updateTimer(seconds);
+      } else {
+        executer.stop();
+        this.timer.hide();
+        this.form.removeClassName('submitting');
+        this.form.reset();
+        this.updateChecked();
+      }
+    }.bind(this), 1);
+  },
+  
+  updateTimer: function(seconds) {
+    this.timer.update('You can vote again in ' + seconds + ' second' + (seconds == 1 ? '' : 's') + '.');
+  },
+  
+  updateChecked: function() {
     var field = this.form.down('input[checked]');
     if (field) {
       var label = field.up('label');
@@ -34,6 +63,8 @@ RT.Vote = Class.create({
       label.addClassName('checked');
       label.previousSiblings().invoke('addClassName', 'selected');
       label.nextSiblings().invoke('removeClassName', 'selected');
+    } else {
+      this.form.select('label').invoke('removeClassName', 'checked').invoke('removeClassName', 'selected');
     }
   },
   
@@ -45,7 +76,8 @@ RT.Vote = Class.create({
   up: function(event, label) {
     this.isDown = false;
     label.down('input').setValue(true);
-    this.setChecked();
+    this.updateChecked();
+    this.submit();
   },
   
   upOutside: function() {
@@ -86,7 +118,8 @@ RT.Vote = Class.create({
       if (label) {
         label.removeClassName('active');
         label.down('input').setValue(true);
-        this.setChecked();
+        this.updateChecked();
+        this.submit();
       }
     }
   },
@@ -118,11 +151,16 @@ RT.Vote = Class.create({
   touchend: function(event, label) {
     var label = this.form.select('label.hover').last();
     var layout = this.form.getLayout();
-    if (label && this.touchX > 0 && this.touchX < layout.get('width') && this.touchY > 0 && this.touchY < layout.get('height')) {
+    var activated = (label && this.touchX > 0 && this.touchX < layout.get('width') && 
+      this.touchY > 0 && this.touchY < layout.get('height'));
+    if (activated) {
       label.down('input').setValue(true);
-      this.setChecked();
+      this.updateChecked();
     }
     this.form.select('label').invoke('removeClassName', 'active').invoke('removeClassName', 'hover');
+    if (activated) {
+      this.submit();
+    }
   }
 });
 

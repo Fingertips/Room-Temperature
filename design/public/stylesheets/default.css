@@ -33,6 +33,10 @@ label
   float: left;
   width: 100%;
 }
+#vote form.submitting
+{
+  opacity: 0.5;
+}
 #vote label 
 {
   display: block;
@@ -51,24 +55,25 @@ label
 {
   color: #f3d;
 }
+#vote label div:focus
+{
+  outline: none;
+}
 #vote label.hover div,
 #vote label div:focus
 {
   outline: 1px dotted grey;
 /*  text-shadow: #fff 0 0 5px, #fff 0 0 20px;*/
 }
-#vote label div:focus
-{
-  outline: none;
-}
+
 #vote label.active div
 {
-  outline: 1px dotted white;
+  outline: 1px solid white;
 /*  text-shadow: #fff 0 0 5px, #fff 0 0 20px, #fff 0 0 80px;*/
 }
 #vote input
 {
-  display: none;
+/*  display: none;*/
 }
 #vote span
 {
