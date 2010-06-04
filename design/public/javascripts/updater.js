@@ -1,6 +1,6 @@
 if (typeof RT == "undefined") RT = {};
 
-RT.delay = 10;
+RT.delay = 2;
 
 RT.Updater = Class.create({
   initialize: function() {
@@ -22,10 +22,7 @@ RT.Updater = Class.create({
     json.evalJSON().minutes.each(function(minute) {
       var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
       var minutes = timestamp.getMinutes();
-      if (minutes % 15 != 0) {
-        timestamp = false;
-      }
-      out += '<div class="minute' + (timestamp ? ' separator' : '') + (minutes === 0 ? ' hour' : '') + '" id="minute_' + minute.id + '">\n';
+      out += '<div class="minute' + (minutes % 15 == 0 ? ' separator' : '') + (minutes === 0 ? ' hour' : '') + '" id="minute_' + minute.timestamp + '">\n';
       minute.stars.each(function(star, index) {
         var width = star * 100;
         var color = 55 + Math.round(star * 200);
@@ -36,7 +33,7 @@ RT.Updater = Class.create({
         }
         out += '</div>\n';
       });
-      if (timestamp) {
+      if (minutes % 15 == 0) {
         out += '<span class="timestamp" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (minutes < 10 ? '0' : '') + minutes + '</span>'
       }
       out += '</div>\n';
