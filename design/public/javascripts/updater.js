@@ -18,11 +18,13 @@ RT.Updater = Class.create({
   },
   
   render: function(json) {
+    var minutes = json.evalJSON().minutes;
+    this.latest = minutes.first().timestamp;
     out = '';  // TODO Find out what's the fastest way to build the html
-    json.evalJSON().minutes.each(function(minute) {
+    minutes.each(function(minute) {
       var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
       var minutes = timestamp.getMinutes();
-      out += '<div class="minute' + (minutes % 15 == 0 ? ' separator' : '') + (minutes === 0 ? ' hour' : '') + '" id="minute_' + minute.timestamp + '">\n';
+      out += '<div class="minute' + (minutes % 15 == 0 ? ' separator' : '') + (minutes === 0 ? ' hour' : '') + '">\n';
       minute.stars.each(function(star, index) {
         var width = star * 100;
         var color = 55 + Math.round(star * 200);
@@ -50,10 +52,6 @@ RT.Updater = Class.create({
     }.bind(this), 50);
   },
   
-  mostRecentMinuteId: function() {
-    return this.results.down('div.minute').id.substring(7);
-  },
-  
   updateTimer: function(executer) {
     var left = (RT.delay + (this.then - new Date().getTime()) / 1000);
     if (left > 0) {
@@ -65,13 +63,13 @@ RT.Updater = Class.create({
     } else if (!this.request) {
       this.progressBar.setStyle({width: '0'});
       $(document.body).addClassName('loading');
-      var id = this.mostRecentMinuteId();
-      var url = this.form.getAttribute('action') + '?id=' + id;
-      url = url.gsub('?id=', '-');  // TODO For development
+      var url = this.form.getAttribute('action') + '?latest=' + this.latest;
+      url = url.gsub('?latest=', '-');  // TODO For development
+      var latest = this.latest;
       this.request = new Ajax.Request(url, {
         parameters: this.form.serialize(true),
         onSuccess: function(response) {
-          if (id == this.mostRecentMinuteId()) {
+          if (latest == this.latest) {
             this.render(response.responseText);
           }
         }.bind(this),
