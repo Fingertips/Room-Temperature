@@ -44,6 +44,7 @@ body.loading #progress
   display: block;
   float: left;
   width: 20%;
+  margin: 0 0 1em 0;
 }
 #vote label div
 {
@@ -91,17 +92,71 @@ body.loading #progress
 {
   clear: both;
   width: 90%;
-  margin: 0 auto;
-  background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#fff));
+  margin: 1em auto;
+  background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#fff));
   -webkit-mask-box-image: url(images/progress_mask.png) 4 4 4 4 stretch;
 }
 #progress div
 {
-  height: 10px;
+  height: 12px;
   width: 100%;
   background: -webkit-gradient(linear, left top, left bottom, from(#6c6), to(#393));
+  -webkit-box-shadow: 0 2px 3px #000);
 }
 #progress div.smooth
 {
   -webkit-transition: width .1s linear;
 }
+#results div.m
+{
+  position: relative;
+  clear: both;
+  float: left;
+  width: 100%;
+/*  outline: 1px dashed red;*/
+}
+#results div.m.s
+{
+  border-top: 1px solid red;
+}
+#results div.m > div
+{
+  position: relative;
+  float: left;
+  width: 20%;
+/*  outline: 1px dashed green;*/
+}
+#results div.m > div div
+{
+  height: 4px;
+  margin: 0 auto;
+}
+#results div.m > div span:before
+{
+  z-index: 1;
+  content: "☆";
+  width: 100%;
+  display: block;
+  position: absolute;
+  top: -.5em;
+  font-size: 2em;
+  color: green;
+  text-align: center;
+}
+#results div.m span.t
+{
+  position: absolute;
+  top: 0px;
+  left: -50px;
+/*  outline: 1px dashed yellow;*/
+}
+#results .v0 { background-color: #666; -webkit-box-shadow: -2px 0 3px #666, 2px 0 3px #666; }
+#results .v1 { background-color: #777; -webkit-box-shadow: -2px 0 3px #777, 2px 0 3px #777; }
+#results .v2 { background-color: #888; -webkit-box-shadow: -2px 0 3px #888, 2px 0 3px #888; }
+#results .v3 { background-color: #999; -webkit-box-shadow: -2px 0 3px #999, 2px 0 3px #999; }
+#results .v4 { background-color: #aaa; -webkit-box-shadow: -2px 0 3px #aaa, 2px 0 3px #aaa; }
+#results .v5 { background-color: #bbb; -webkit-box-shadow: -2px 0 3px #bbb, 2px 0 3px #bbb; }
+#results .v6 { background-color: #ccc; -webkit-box-shadow: -2px 0 3px #ccc, 2px 0 3px #ccc; }
+#results .v7 { background-color: #ddd; -webkit-box-shadow: -2px 0 3px #ddd, 2px 0 3px #ddd; }
+#results .v8 { background-color: #eee; -webkit-box-shadow: -2px 0 3px #eee, 2px 0 3px #eee; }
+#results .v9 { background-color: #fff; -webkit-box-shadow: -2px 0 3px #fff, 2px 0 3px #fff; }
