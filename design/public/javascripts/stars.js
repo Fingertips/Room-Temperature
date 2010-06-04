@@ -90,16 +90,21 @@ RT.Stars = Class.create({
     }
   },
   
+  setTouchPosition: function(event) {
+    var offset = this.form.viewportOffset();
+    this.touchX = event.targetTouches[0].clientX - offset.left;
+    this.touchY = event.targetTouches[0].clientY - offset.top;
+  },
+  
   touchstart: function(event, label) {
+    this.setTouchPosition(event);
     label.addClassName('active');
     label.previousSiblings().concat(label).invoke('addClassName', 'hover');
   },
   
   touchmove: function(event) {
     if (event.targetTouches.length == 1) {
-      var offset = this.form.viewportOffset();
-      this.touchX = event.targetTouches[0].clientX - offset.left;
-      this.touchY = event.targetTouches[0].clientY - offset.top;
+      this.setTouchPosition(event);
       var label = this.form.select('label').detect(function(label) {
         if (this.touchX > 0 && this.touchX < (label.measure('left') + label.measure('width'))) {
           return label;
