@@ -1,6 +1,6 @@
 if (typeof RT == "undefined") RT = {};
 
-RT.delay = 2;
+RT.delay = 5;
 
 RT.Updater = Class.create({
   initialize: function() {
@@ -18,10 +18,10 @@ RT.Updater = Class.create({
   },
   
   render: function(json) {
-    var minutes = json.evalJSON().minutes;
-    this.latest = minutes.first().timestamp;
+    var data = json.evalJSON();
+    this.latest = data.minutes.first().timestamp;
     out = '';  // TODO Find out what's the fastest way to build the html
-    minutes.each(function(minute) {
+    data.minutes.each(function(minute) {
       var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
       var minutes = timestamp.getMinutes();
       out += '<div class="minute' + (minutes % 15 == 0 ? ' separator' : '') + (minutes === 0 ? ' hour' : '') + '">\n';
@@ -41,7 +41,11 @@ RT.Updater = Class.create({
       out += '</div>\n';
     });
     // console.log(out);
-    this.results.insert({top: out});
+    if (data.intent == 'replace') {
+      this.results.update(out);
+    } else {
+      this.results.insert({top: out});
+    }
   },
   
   resetTimer: function() {
