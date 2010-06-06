@@ -1,37 +1,21 @@
-body, ul, li, h1, p
+/* 
+  768
+  24 720 24
+  24 144 144 144 144 144 24
+*/
+
+body
 {
   margin: 0;
   padding: 0;
   font-size: 1em;
 }
-ul
-{
-  list-style-type: none;
-}
 
 body
 {
-  background-color: #000;
+  background: #000 url(images/bg.png) 0 0 repeat-x;
   color: #fff;
-  font: 18px/1 "HelveticaNeue-Medium", helvetica, arial, sans-serif;
-}
-#column
-{
-  position: relative;
-  max-width: 768px;
-  margin: 0 auto;
-/*  outline: 1px dashed red;*/
-}
-h1,
-label
-{
-  text-align: center;
-  text-transform: uppercase;
-}
-#vote form
-{
-  float: left;
-  width: 100%;
+  font: 15px/1 "HelveticaNeue-Medium", helvetica, arial, sans-serif;
 }
 body.loading #vote form,
 body.loading #progress
@@ -39,40 +23,75 @@ body.loading #progress
   opacity: 0.5;
   -webkit-transition: opacity .5s linear;
 }
-#vote label 
+#column
 {
-  display: block;
+  position: relative;
+  max-width: 768px;
+  margin: 0 auto;
+}
+#vote form  /* Needed for touch support */
+{
   float: left;
-  width: 20%;
-  margin: 0 0 1em 0;
+  width: 100%;
+}
+#vote label
+{
+  float: left;
+  width: 18.75%;
+  display: block;
+}
+#vote label.first,
+#vote label.last
+{
+  width: 21.875%;
+}
+#vote label.first div,
+#vote label.last div
+{
+  width: 85.7143%;
+}
+#vote label.first div
+{
+  margin-left: 14.2857%;
 }
 #vote label div
 {
-  color: #666;
-}
-#vote label.selected div
-{
-  color: #93d;
-}
-#vote label.checked div
-{
-  color: #f3d;
+  height: 144px;
+  background: url('images/star.png') 50% -144px no-repeat;
+  color: #999;
 }
 #vote label div:focus
 {
   outline: none;
 }
 #vote label.hover div,
-#vote label div:focus
+#vote label div:focus div
 {
-  outline: 1px dotted grey;
-/*  text-shadow: #fff 0 0 5px, #fff 0 0 20px;*/
+  background-position: 50% -288px;
 }
-
-#vote label.active div
+#vote label.active div,
+#vote label.active div:focus
 {
-  outline: 1px solid white;
-/*  text-shadow: #fff 0 0 5px, #fff 0 0 20px, #fff 0 0 80px;*/
+  background-position: 50% -432px;
+}
+#vote label.checked div,
+#vote label.selected div
+{
+  background-position: 50% -576px;
+}
+#vote label.checked.hover div,
+#vote label.selected.hover div,
+#vote label.checked div:focus,
+#vote label.selected div:focus
+{
+  background-position: 50% -720px;
+}
+#vote label.checked.active div,
+#vote label.selected.active div,
+#vote label.checked.active div:focus,
+#vote label.selected.active div:focus
+{
+  background-position: 50% -864px;
 }
 #vote input
 {
@@ -80,19 +99,17 @@ body.loading #progress
 }
 #vote span
 {
+  padding-top: 116px;
   display: block;
+  text-align: center;
+  text-transform: uppercase;
 }
-#vote span:before
-{
-  content: "★";
-  display: block;
-  font-size: 6em;
-}
+
 #progress
 {
   clear: both;
-  width: 90%;
-  margin: 1em auto;
+  width: 87.5%;
+  margin: 24px auto;
   background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#fff));
   -webkit-mask-box-image: url(images/progress_mask.png) 4 4 4 4 stretch;
 }
@@ -113,22 +130,26 @@ body.loading #progress
   clear: both;
   float: left;
   width: 100%;
-/*  outline: 1px dashed red;*/
+}
+
+#results
+{
+  width: 87.5%;
+  margin: 0 auto;
 }
 #results div.separator
 {
-  border-top: 1px dotted #666;
+  background-color: #2a2a2a;
 }
 #results div.hour
 {
-  border-top: 1px dotted #fff;
+  background-color: #333;
 }
 #results div.minute > div
 {
   position: relative;
   float: left;
   width: 20%;
-/*  outline: 1px dashed green;*/
 }
 #results div.minute > div div
 {
@@ -136,22 +157,29 @@ body.loading #progress
   margin: 0 auto;
   background-color: #fff;
 }
-#results div.minute > div span:before
+#results div.minute > div span
 {
   z-index: 1;
-  content: "☆";
   width: 100%;
+  height: 48px;
   display: block;
   position: absolute;
-  top: -.5em;
-  font-size: 2em;
-  color: green;
-  text-align: center;
+  top: -22px;
+  background: url('images/star.png') 50% 0 no-repeat;
 }
 #results div.minute span.timestamp
 {
   position: absolute;
-  top: 0px;
-  left: -50px;
-/*  outline: 1px dashed yellow;*/
+  top: -4px;
+  left: -48px;
+  width: 48px;
+  color: #666;
+  text-align: center;
+  font: 11px/1 "HelveticaNeue", helvetica, arial, sans-serif;
+/*  outline: 1px dotted yellow;*/
+}
+
+.clear
+{
+  clear: both;
 }

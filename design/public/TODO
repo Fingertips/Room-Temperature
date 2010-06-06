@@ -1,3 +1,7 @@
+- Test in other browsers.
+- Make the progress bar work without -webkit-... stuff.
+- Make the viewport 1024px wide when the iPad is in landscape orientation.
+
 - No 'Load more…' at the bottom; ?before=[timestamp] for now. Maybe we should have separate page(s) with abbreviated per-room result 'logs'?
 - Use a countdown attribute on the class instead of using the real time so the bar updates more cleanly (if slightly incorrect)?
 - Title attribute with timestamp for each row?

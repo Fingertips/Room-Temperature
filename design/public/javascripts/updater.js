@@ -1,6 +1,6 @@
 if (typeof RT == "undefined") RT = {};
 
-RT.delay = 5;
+RT.delay = 60;
 
 RT.Updater = Class.create({
   initialize: function() {
@@ -40,7 +40,6 @@ RT.Updater = Class.create({
       }
       out += '</div>\n';
     });
-    // console.log(out);
     if (data.intent == 'replace') {
       this.results.update(out);
     } else {

@@ -67,20 +67,23 @@ RT.Stars = Class.create({
   
   keydown: function(event) {
     var code = event.keyCode;
-    if (code === Event.KEY_RETURN || code === Event.KEY_SPACE) {
+    if (code === Event.KEY_TAB) {
+      this.form.select('label.hover').invoke('removeClassName', 'hover');
+    } else if (code === Event.KEY_RETURN) {
       var label = $(document.activeElement).up();
       if (!label.match('label')) {
         label = this.form.select('label.hover').last();
       }
       if (label) {
         label.addClassName('active');
+        console.log('Active');
       }
     }
   },
   
   keyup: function(event) {
     var code = event.keyCode;
-    if (code === Event.KEY_RETURN || code === Event.KEY_SPACE) {
+    if (code === Event.KEY_RETURN) {
       var label = this.form.down('label.active');
       if (label) {
         label.removeClassName('active');
