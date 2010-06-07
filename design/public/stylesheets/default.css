@@ -4,19 +4,30 @@
   24 144 144 144 144 144 24
 */
 
-body, html p
+body, html, h1, p, ul, li
 {
   margin: 0;
   padding: 0;
+  list-style-type: none;
 }
 
 body
 {
   font: 15px/1.2 "HelveticaNeue", helvetica, arial, sans-serif;
 }
+h1,
+{
+  font: 20px/1 "HelveticaNeue-bold", helvetica, arial, sans-serif;
+  letter-spacing: 1px;
+}
+.index h1
+{
+  font-size: 60px;
+  letter-spacing: 2px;
+}
 label
 {
-  font: 15px/1 "HelveticaNeue", helvetica, arial, sans-serif;
+  font: 15px/1 "HelveticaNeue-Medium", helvetica, arial, sans-serif;
   letter-spacing: 1px;
 }
 span.timestamp
@@ -67,7 +78,7 @@ body.loading #progress
 }
 #column > .clear
 {
-  height: 46px;
+  height: 26px;
 }
 #credits
 {
@@ -82,6 +93,33 @@ body.loading #progress
   margin: 0 8px;
 }
 
+h1
+{
+  padding: 18px 0 0 0;
+  text-align: center;
+  color: #000;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+}
+.index h1
+{
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.8);
+}
+.index ul
+{
+  width: 87.5%;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+.index li a
+{
+  float: left;
+  width: 50%;
+  padding: 4px 0;
+  display: block;
+  text-align: center;
+}
+
 #vote form  /* Needed for touch support */
 {
   float: left;
@@ -92,6 +130,8 @@ body.loading #progress
   float: left;
   width: 18.75%;
   display: block;
+  color: #999;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.8);
 }
 #vote label.first,
 #vote label.last
@@ -111,7 +151,6 @@ body.loading #progress
 {
   height: 144px;
   background: url('images/star.png') 50% -144px no-repeat;
-  color: #999;
 }
 #vote label div:focus
 {
@@ -121,6 +160,7 @@ body.loading #progress
 #vote label div:focus div
 {
   background-position: 50% -288px;
+  color: #eee;
 }
 #vote label.active div,
 #vote label.active div:focus
@@ -180,9 +220,9 @@ body.loading #progress
 #results div.minute
 {
   position: relative;
-  clear: both;
   float: left;
   width: 100%;
+  clear: both;
 }
 
 #results
@@ -192,11 +232,11 @@ body.loading #progress
 }
 #results div.separator
 {
-  background-color: #2a2a2a;
+  background-color: #181818;
 }
 #results div.hour
 {
-  background-color: #333;
+  background-color: #202020;
 }
 #results div.minute > div
 {

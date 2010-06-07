@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width = 768px, user-scalable = no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>NSConference MINI 2010 · Room Temperature</title>
+<link href="stylesheets/default.css" media="all" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div id="column">
+  <h1>NSConference MINI 2010</h1>
+  <div id="vote">
+    <form action="results" method="post">
+      <label class="first"><div tabindex="0"><input type="radio" name="stars" value="1"><span>Really<br>Sucks</span></div></label>
+      <label><div tabindex="0"><input type="radio" name="stars" value="2"><span>Kinda<br>Meh</span></div></label>
+      <label><div tabindex="0"><input type="radio" name="stars" value="3"><span>Not<br>bad</span></div></label>
+      <label><div tabindex="0"><input type="radio" name="stars" value="4"><span>Rather<br>good</span></div></label>
+      <label class="last"><div tabindex="0"><input type="radio" name="stars" value="5"><span>Very<br>awesome</span></div></label>
+    </form>
+    <div class="clear"></div>
+  </div>
+  <div id="progress"><div></div></div>
+  <div id="results"></div>
+  <div class="clear"></div>
+</div>
+<div id="credits">
+  <p>Made by <a href="http://www.fngtps.com">Fingertips</a>. Follow us <a href="http://twitter.com/fngtps">on Twitter</a>.</p>
+</div>
+
+<script src="javascripts/prototype.js"></script>
+<script src="javascripts/s2.js"></script>
+<script src="javascripts/stars.js"></script>
+<script src="javascripts/updater.js"></script>
+
+</body>
+</html>
