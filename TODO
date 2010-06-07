@@ -1,0 +1,4 @@
+- Allow multiple rooms, each with a title and a label for its url (e.g. http://roomte.mp/nsconf)
+- Add a simple rooms overview, see index.html
+- Add longer ‘tails’, multiplying the previous value with 2/3 looks nice for example
+- When loading the first set of results, make sure not to include empty minutes at the bottom
