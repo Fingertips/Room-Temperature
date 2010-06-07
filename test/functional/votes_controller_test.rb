@@ -38,7 +38,17 @@ describe "On the", VotesController, "a visitor" do
     lambda {
       post :create
     }.should.not.differ('Vote.count')
-    status.should.be :ok
+    status.should.be :unprocessable_entity
     JSON.parse(response.body).should == [["stars", "should be 1, 2, 3, 4, or 5"]]
+  end
+  
+  it "sees new standings when creating a vote with timestamp, but without star rating" do
+    lambda {
+      post :create, {:since => (Standing.end_last_interval - 120)}
+    }.should.not.differ('Vote.count')
+    status.should.be :ok
+    standing = JSON.parse(response.body)
+    standing.should.has_key?('minutes')
+    standing['minutes'].length.should == 2
   end
 end
