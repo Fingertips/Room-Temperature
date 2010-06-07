@@ -17,6 +17,20 @@ describe Standing do
     intervals.length.should == Standing::MAX_UPDATES
   end
   
+  it "returns updates with the clients votes when a client token was passed" do
+    Standing.stubs(:intervals_since).returns([1275904980, 1275904920, 1275904860, 1275904800, 1275904740])
+    updates = Standing.since('timestamp', 'RzHeQoof')
+    updates.should == {
+      'minutes' => [
+        {"timestamp"=>1275904980, "stars"=>[0.02, 0.12, 0.0, 0.02, 0.85]},
+        {"timestamp"=>1275904920, "stars"=>[0.03, 0.93, 0.0, 0.03, 0.0], "user"=>2},
+        {"timestamp"=>1275904860, "stars"=>[0.28, 0.38, 0.0, 0.28, 0.05], "user"=>2},
+        {"timestamp"=>1275904800, "stars"=>[0.0, 0.85, 0.0, 0.0, 0.1]},
+        {"timestamp"=>1275904740, "stars"=>[0.0, 0.0, 0.0, 0.0, 0.85], "user"=>5}
+      ]
+    }
+  end
+  
   it "returns the intent to update all votes when the timestamp was too old" do
     updates = Standing.since(100)
     updates.should.has_key('intent')
@@ -52,14 +66,14 @@ describe Standing do
   
   it "returns the latest standings" do
     Standing.stubs(:last_intervals).with(5).returns([1275904980, 1275904920, 1275904860, 1275904800, 1275904740])
-    Standing.latest(5).should == {
+    Standing.latest(5, 'RzHeQoof').should == {
       'intent'  => 'replace',
       'minutes' => [
         {"timestamp"=>1275904980, "stars"=>[0.02, 0.12, 0.0, 0.02, 0.85]},
-        {"timestamp"=>1275904920, "stars"=>[0.03, 0.93, 0.0, 0.03, 0.0]},
-        {"timestamp"=>1275904860, "stars"=>[0.28, 0.38, 0.0, 0.28, 0.05]},
+        {"timestamp"=>1275904920, "stars"=>[0.03, 0.93, 0.0, 0.03, 0.0], "user"=>2},
+        {"timestamp"=>1275904860, "stars"=>[0.28, 0.38, 0.0, 0.28, 0.05], "user"=> 2},
         {"timestamp"=>1275904800, "stars"=>[0.0, 0.85, 0.0, 0.0, 0.1]},
-        {"timestamp"=>1275904740, "stars"=>[0.0, 0.0, 0.0, 0.0, 0.85]}
+        {"timestamp"=>1275904740, "stars"=>[0.0, 0.0, 0.0, 0.0, 0.85], "user"=>5}
       ]
     }
   end

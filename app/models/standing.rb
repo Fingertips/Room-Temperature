@@ -4,9 +4,9 @@ class Standing
   INTERVAL_LENGTH = 60
   MAX_UPDATES     = 180
   
-  def self.since(timestamp)
+  def self.since(timestamp, client_token=nil)
     minutes = (intervals_since(timestamp).map do |timestamp|
-      on(timestamp)
+      on(timestamp, client_token)
     end)
     
     updates = { 'minutes' => minutes }
@@ -26,9 +26,9 @@ class Standing
     since
   end
   
-  def self.latest(n=10)
+  def self.latest(n=10, client_token=nil)
     minutes = (last_intervals(n).map do |timestamp|
-      on(timestamp)
+      on(timestamp, client_token)
     end)
     { 'intent' => 'replace', 'minutes' => minutes }
   end
@@ -43,22 +43,22 @@ class Standing
     (0..(n-1)).map { |offset| end_last_interval - (offset * INTERVAL_LENGTH) }
   end
   
-  def self.on(timestamp)
-    @standing ||= {}
-    unless @standing[timestamp]
-      stars = [[0, 0.85],[1, 0.10],[2, 0.05]].inject([0, 0, 0, 0, 0]) do |stars, (offset, weight)|
-        votes = Vote.find_in_interval(timestamp - (offset * INTERVAL_LENGTH))
-        votes.each do |vote|
-          stars[vote.stars-1] += (1.0 / votes.length) * weight
+  def self.on(timestamp, client_token=nil)
+    user = nil
+    stars = [[0, 0.85],[1, 0.10],[2, 0.05]].inject([0, 0, 0, 0, 0]) do |stars, (offset, weight)|
+      votes = Vote.find_in_interval(timestamp - (offset * INTERVAL_LENGTH))
+      votes.each do |vote|
+        if offset == 0 and vote.client_token == client_token
+          user = vote.stars
         end
-        stars
+        stars[vote.stars-1] += (1.0 / votes.length) * weight
       end
-      @standing[timestamp] = {
-        'stars'     => stars.map { |star| (star * 100.0).round / 100.0 },
-        'timestamp' => timestamp
-      }
+      stars
     end
-    @standing[timestamp]
+    on = { 'stars'     => stars.map { |star| (star * 100.0).round / 100.0 },
+           'timestamp' => timestamp }
+    on['user'] = user if user
+    on
   end
   
   def self.max_updates
