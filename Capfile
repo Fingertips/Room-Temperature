@@ -1,0 +1,3 @@
+load 'deploy'
+require 'rubygems'
+
