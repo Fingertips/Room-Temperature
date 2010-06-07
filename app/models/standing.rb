@@ -60,4 +60,8 @@ class Standing
     end
     @standing[timestamp]
   end
+  
+  def self.max_updates
+    MAX_UPDATES
+  end
 end
