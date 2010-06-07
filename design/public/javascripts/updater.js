@@ -1,6 +1,6 @@
 if (typeof RT == "undefined") RT = {};
 
-RT.delay = 60;
+RT.delay = 5;
 
 RT.Updater = Class.create({
   initialize: function() {
@@ -8,6 +8,7 @@ RT.Updater = Class.create({
     this.progressBar = $('progress').down('div');
     this.results = $('results');
     this.request = false;
+    this.stars = new RT.Stars(this.form);
     new Ajax.Request('results', {
       onSuccess: function(response) {
         this.render(response.responseText);
@@ -73,6 +74,8 @@ RT.Updater = Class.create({
         parameters: this.form.serialize(true),
         onSuccess: function(response) {
           if (latest == this.latest) {
+            this.form.reset();
+            this.stars.updateChecked();
             this.render(response.responseText);
           }
         }.bind(this),

@@ -1,3 +1,4 @@
+- Orange instead of blue?
 - Test in other browsers.
 - Make the progress bar work without -webkit-... stuff.
 - Make the viewport 1024px wide when the iPad is in landscape orientation.
