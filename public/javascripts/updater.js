@@ -8,6 +8,7 @@ RT.Updater = Class.create({
     this.progressBar = $('progress').down('div');
     this.results = $('results');
     this.request = false;
+    this.stars = new RT.Stars(this.form);
     new Ajax.Request('/standing', {
       method: 'GET',
       onSuccess: function(response) {
@@ -73,6 +74,8 @@ RT.Updater = Class.create({
         parameters: this.form.serialize(true),
         onSuccess: function(response) {
           if (latest == this.latest) {
+            this.form.reset();
+            this.stars.updateChecked();
             this.render(response.responseText);
           }
         }.bind(this),

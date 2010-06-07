@@ -1,8 +1,8 @@
 if (typeof RT == "undefined") RT = {};
 
 RT.Stars = Class.create({
-  initialize: function() {
-    this.form = $('vote').down('form');
+  initialize: function(form) {
+    this.form = $(form);
     this.updateChecked();
     S2.UI.disableTextSelection($('vote'));
     
@@ -132,5 +132,3 @@ RT.Stars = Class.create({
     this.form.select('label').invoke('removeClassName', 'active').invoke('removeClassName', 'hover');
   }
 });
-
-new RT.Stars();
