@@ -1,6 +1,6 @@
 if (typeof RT == "undefined") RT = {};
 
-RT.delay = 5;
+RT.delay = 60;
 
 RT.Updater = Class.create({
   initialize: function() {

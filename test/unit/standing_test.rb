@@ -1,6 +1,28 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 describe Standing do
+  it "returns intervals since a certain timestamp" do
+    Standing.stubs(:end_last_interval).returns(1275909240)
+    Standing.intervals_since(1275909000).should == [
+      1275909240,
+      1275909180,
+      1275909120,
+      1275909060,
+      1275909000,
+    ]
+  end
+  
+  it "should never return more than the maximum intervals" do
+    intervals = Standing.intervals_since(100)
+    intervals.length.should == Standing::MAX_UPDATES
+  end
+  
+  it "returns the intent to update all votes when the timestamp was too old" do
+    updates = Standing.since(100)
+    updates.should.has_key('intent')
+    updates['intent'].should == 'replace'
+  end
+  
   it "returns the standing on a certain timestamp" do
     Standing.on(1275904980).should == {
       'stars'     => [0.02, 0.12, 0.0, 0.02, 0.85],
@@ -12,16 +34,20 @@ describe Standing do
     }
   end
   
+  it "returns the end of the last interval" do
+    Standing.end_last_interval.should <= Time.now.to_i
+    Standing.end_last_interval.should >= (Time.now.to_i - 60)
+  end
+  
   it "returns the last intervals" do
-    now = Time.now.to_i
-    n = 10
-    
-    last_intervals = Standing.last_intervals(n)
-    last_intervals.first.should <= now
-    last_intervals.first.should >= (now - (now % 60))
-    (last_intervals.first - last_intervals.second).should == 60
-    
-    last_intervals.length.should == n
+    Standing.stubs(:end_last_interval).returns(1275913120)
+    Standing.last_intervals(5).should == [
+      1275913120,
+      1275913060,
+      1275913000,
+      1275912940,
+      1275912880
+    ]
   end
   
   it "returns the latest standings" do

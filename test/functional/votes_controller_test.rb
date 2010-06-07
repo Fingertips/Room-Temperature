@@ -24,6 +24,16 @@ describe "On the", VotesController, "a visitor" do
     assigns(:vote).client_token.should == client_token
   end
   
+  it "sees new standings when submitting a timestamp along with the vote" do
+    lambda {
+      post :create, {:stars => 3, :since => (Standing.end_last_interval - 120)}
+    }.should.differ('Vote.count', +1)
+    status.should.be :created
+    standing = JSON.parse(response.body)
+    standing.should.has_key?('minutes')
+    standing['minutes'].length.should == 3
+  end
+  
   it "shows validations errors when the vote is not valid" do
     lambda {
       post :create

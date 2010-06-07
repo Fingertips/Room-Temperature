@@ -12,6 +12,6 @@ describe "On the", StandingsController, "a visitor" do
     get :show, :format => 'json'
     status.should.be :ok
     response.content_type.should == 'application/json'
-    JSON.parse(response.body).should == Standing.latest
+    JSON.parse(response.body).should == Standing.latest(50)
   end
 end

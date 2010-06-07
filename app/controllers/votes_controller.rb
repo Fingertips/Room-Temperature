@@ -2,7 +2,11 @@ class VotesController < ApplicationController
   def create
     @vote = Vote.new(:stars => params[:stars], :client_token => @client_token)
     if @vote.save
-      render :nothing => true, :status => :created
+      if params[:since]
+        render :json => Standing.since(params[:since].to_i), :status => :created
+      else
+        render :nothing => true, :status => :created
+      end
     else
       render :json => @vote.errors.to_json
     end
