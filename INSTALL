@@ -1,0 +1,4 @@
+# Install
+
+$ rake gems:install
+$ rake db:setup
