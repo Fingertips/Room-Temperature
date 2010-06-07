@@ -1,17 +1,23 @@
 ENV["RAILS_ENV"] = "test"
-require File.expand_path('../../config/environment', __FILE__)
-require 'rails/test_help'
+require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+require 'test_help'
 
 require 'mocha'
 require 'test/spec'
 require 'test/spec/rails'
+require 'test/spec/rails/macros'
+require 'test/spec/share'
+require 'test/spec/add_allow_switch'
+
+require 'ostruct'
+
+Net::HTTP.add_allow_switch :start
+TCPSocket.add_allow_switch :open
+
+ActionMailer::Base.default_url_options[:host] = 'test.host'
 
 class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
-  #
-  # Note: You'll currently still have to declare fixtures explicitly in integration tests
-  # -- they do not yet inherit this setting
+  self.use_transactional_fixtures = true
+  self.use_instantiated_fixtures  = false
   fixtures :all
-
-  # Add more helper methods to be used by all tests here...
 end

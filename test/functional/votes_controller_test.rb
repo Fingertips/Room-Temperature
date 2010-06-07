@@ -31,7 +31,7 @@ describe "On the", VotesController, "a visitor" do
     status.should.be :created
     standing = JSON.parse(response.body)
     standing.should.has_key?('minutes')
-    standing['minutes'].length.should == 3
+    standing['minutes'].length.should == 2
   end
   
   it "shows validations errors when the vote is not valid" do
@@ -39,6 +39,6 @@ describe "On the", VotesController, "a visitor" do
       post :create
     }.should.not.differ('Vote.count')
     status.should.be :ok
-    JSON.parse(response.body).should == { "stars"=>["should be 1, 2, 3, 4, or 5"] }
+    JSON.parse(response.body).should == [["stars", "should be 1, 2, 3, 4, or 5"]]
   end
 end

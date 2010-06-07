@@ -13,7 +13,7 @@ module Token
     raise ArgumentError, "Can't generate a token without any characters or numbers, please select either :with_characters, :with_numbers, or both." if domain.empty?
     
     length = requested_length.odd? ? requested_length + 1 : requested_length
-    token = (1..length).map { |i| domain.rand }.join
+    token = (1..length).map { |i| domain.random_element }.join
     token = token[0...requested_length]
     token.upcase! if options[:upcase]
     token
