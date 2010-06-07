@@ -19,7 +19,7 @@ class Standing
     current              = end_last_interval()
     
     since = []
-    while(current >= begin_first_interval and since.length < MAX_UPDATES)
+    while(current > begin_first_interval and since.length < MAX_UPDATES)
       since << current
       current -= INTERVAL_LENGTH
     end
