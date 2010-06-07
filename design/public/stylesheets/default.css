@@ -164,7 +164,7 @@ body.loading #progress
   height: 48px;
   display: block;
   position: absolute;
-  top: -22px;
+  top: -26px;
   background: url('images/star.png') 50% 0 no-repeat;
 }
 #results div.minute span.timestamp
