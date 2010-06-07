@@ -7,6 +7,6 @@ class Vote < ActiveRecord::Base
     client_token
   end
   
-  validates_presence_of :stars
+  validates_inclusion_of :stars, :in => 1..5, :message => 'should be 1, 2, 3, 4, or 5'
   validates_presence_of :client_token
 end

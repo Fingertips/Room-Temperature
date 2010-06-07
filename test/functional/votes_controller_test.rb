@@ -23,4 +23,12 @@ describe "On the", VotesController, "a visitor" do
     
     assigns(:vote).client_token.should == client_token
   end
+  
+  it "shows validations errors when the vote is not valid" do
+    lambda {
+      post :create
+    }.should.not.differ('Vote.count')
+    status.should.be :ok
+    JSON.parse(response.body).should == { "stars"=>["should be 1, 2, 3, 4, or 5"] }
+  end
 end
