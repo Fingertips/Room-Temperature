@@ -8,3 +8,14 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 Rails::Application.load_tasks
+
+namespace :test do
+  Rake::TestTask.new('lib') do |t|
+    t.test_files = FileList['test/lib/**/*_test.rb']
+    t.verbose = true
+  end
+end
+
+task :test do
+  Rake::Task['test:lib'].invoke
+end
