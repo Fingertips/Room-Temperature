@@ -4,6 +4,7 @@ require 'rubygems'
 set :application, "room-temperature"
 
 require 'fingercap/configurations/miller'
+set :url, "http://roomte.mp"
 
 set :repository, "git@github.com:Fingertips/Room-Temperature.git"
 set :scm, "git"
