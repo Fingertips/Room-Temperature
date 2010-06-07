@@ -1,0 +1,185 @@
+/* 
+  768
+  24 720 24
+  24 144 144 144 144 144 24
+*/
+
+body
+{
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+}
+
+body
+{
+  background: #000 url(images/bg.png) 0 0 repeat-x;
+  color: #fff;
+  font: 15px/1 "HelveticaNeue-Medium", helvetica, arial, sans-serif;
+}
+body.loading #vote form,
+body.loading #progress
+{
+  opacity: 0.5;
+  -webkit-transition: opacity .5s linear;
+}
+#column
+{
+  position: relative;
+  max-width: 768px;
+  margin: 0 auto;
+}
+#vote form  /* Needed for touch support */
+{
+  float: left;
+  width: 100%;
+}
+#vote label
+{
+  float: left;
+  width: 18.75%;
+  display: block;
+}
+#vote label.first,
+#vote label.last
+{
+  width: 21.875%;
+}
+#vote label.first div,
+#vote label.last div
+{
+  width: 85.7143%;
+}
+#vote label.first div
+{
+  margin-left: 14.2857%;
+}
+#vote label div
+{
+  height: 144px;
+  background: url('images/star.png') 50% -144px no-repeat;
+  color: #999;
+}
+#vote label div:focus
+{
+  outline: none;
+}
+#vote label.hover div,
+#vote label div:focus div
+{
+  background-position: 50% -288px;
+}
+#vote label.active div,
+#vote label.active div:focus
+{
+  background-position: 50% -432px;
+}
+#vote label.checked div,
+#vote label.selected div
+{
+  background-position: 50% -576px;
+}
+#vote label.checked.hover div,
+#vote label.selected.hover div,
+#vote label.checked div:focus,
+#vote label.selected div:focus
+{
+  background-position: 50% -720px;
+}
+#vote label.checked.active div,
+#vote label.selected.active div,
+#vote label.checked.active div:focus,
+#vote label.selected.active div:focus
+{
+  background-position: 50% -864px;
+}
+#vote input
+{
+  display: none;
+}
+#vote span
+{
+  padding-top: 116px;
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#progress
+{
+  clear: both;
+  width: 87.5%;
+  margin: 24px auto;
+  background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#fff));
+  -webkit-mask-box-image: url(images/progress_mask.png) 4 4 4 4 stretch;
+}
+#progress div
+{
+  height: 12px;
+  width: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#6c6), to(#393));
+  -webkit-box-shadow: 0 2px 3px #000);
+}
+#progress div.smooth
+{
+  -webkit-transition: width .1s linear;
+}
+#results div.minute
+{
+  position: relative;
+  clear: both;
+  float: left;
+  width: 100%;
+}
+
+#results
+{
+  width: 87.5%;
+  margin: 0 auto;
+}
+#results div.separator
+{
+  background-color: #2a2a2a;
+}
+#results div.hour
+{
+  background-color: #333;
+}
+#results div.minute > div
+{
+  position: relative;
+  float: left;
+  width: 20%;
+}
+#results div.minute > div div
+{
+  height: 4px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+#results div.minute > div span
+{
+  z-index: 1;
+  width: 100%;
+  height: 48px;
+  display: block;
+  position: absolute;
+  top: -22px;
+  background: url('images/star.png') 50% 0 no-repeat;
+}
+#results div.minute span.timestamp
+{
+  position: absolute;
+  top: -4px;
+  left: -48px;
+  width: 48px;
+  color: #666;
+  text-align: center;
+  font: 11px/1 "HelveticaNeue", helvetica, arial, sans-serif;
+/*  outline: 1px dotted yellow;*/
+}
+
+.clear
+{
+  clear: both;
+}

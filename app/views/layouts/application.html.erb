@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>RoomTemperature</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=768px">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>NSConference MINI 2010 · Room Temperature</title>
+<%= stylesheet_link_tag 'default' %>
 </head>
+
 <body>
 
-<%= yield %>
+<div id="column">
+  <div id="vote">
+    <form action="results" method="post">
+      <label class="first"><div tabindex="0"><input type="radio" name="stars" value="1"><span>Really<br>Sucks</span></div></label>
+      <label><div tabindex="0"><input type="radio" name="stars" value="2"><span>Kinda<br>Meh</span></div></label>
+      <label><div tabindex="0"><input type="radio" name="stars" value="3"><span>Not<br>bad</span></div></label>
+      <label><div tabindex="0"><input type="radio" name="stars" value="4"><span>Rather<br>good</span></div></label>
+      <label class="last"><div tabindex="0"><input type="radio" name="stars" value="5"><span>Very<br>awesome</span></div></label>
+    </form>
+    <div class="clear"></div>
+  </div>
+  <div id="progress"><div></div></div>
+  <div id="results">
+  </div>
+</div>
 
+<%= javascript_include_tag %w(prototype s2 stars updater) %>
 </body>
 </html>
