@@ -1,6 +1,6 @@
 if (typeof RT == "undefined") RT = {};
 
-RT.delay = 60;
+RT.delay = 5;
 
 RT.Updater = Class.create({
   initialize: function() {
@@ -8,7 +8,8 @@ RT.Updater = Class.create({
     this.progressBar = $('progress').down('div');
     this.results = $('results');
     this.request = false;
-    new Ajax.Request('results', {
+    new Ajax.Request('/standing', {
+      method: 'GET',
       onSuccess: function(response) {
         this.render(response.responseText);
         this.resetTimer();
@@ -67,7 +68,6 @@ RT.Updater = Class.create({
       this.progressBar.setStyle({width: '0'});
       $(document.body).addClassName('loading');
       var url = this.form.getAttribute('action') + '?since=' + this.latest;
-      url = url.gsub('?since=', '-');  // TODO For development
       var latest = this.latest;
       this.request = new Ajax.Request(url, {
         parameters: this.form.serialize(true),

@@ -7,4 +7,11 @@ describe "On the", StandingsController, "a visitor" do
     template.should.be 'standings/index'
     assert_select 'form'
   end
+  
+  it "sees the latest standings in json" do
+    get :show, :format => 'json'
+    status.should.be :ok
+    response.content_type.should == 'application/json'
+    JSON.parse(response.body).should == Standing.latest
+  end
 end

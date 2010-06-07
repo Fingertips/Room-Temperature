@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'
-  
   before_filter :ensure_client_token
   
   private
