@@ -11,6 +11,13 @@ describe Vote do
     client_token2 = Vote.unused_client_token
     client_token1.should.not == client_token2
   end
+  
+  it "sets a timestamp when saving the vote" do
+    vote = Vote.new(:stars => 3, :client_token => 'adE1Ie7C')
+    vote.timestamp.should.be.nil
+    vote.save!
+    vote.timestamp.should.not.be.nil
+  end
 end
 
 describe Vote, "concerning validation" do

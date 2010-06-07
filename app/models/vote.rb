@@ -1,4 +1,10 @@
 class Vote < ActiveRecord::Base
+  before_save :set_timestamp
+  
+  def set_timestamp
+    self.timestamp = Time.now.to_i
+  end
+  
   def self.unused_client_token
     client_token = nil
     until !client_token.blank? and find_by_client_token(client_token).nil?
