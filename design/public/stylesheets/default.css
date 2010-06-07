@@ -245,11 +245,7 @@ h1
 }
 #results div.separator
 {
-  background-color: #181818;
-}
-#results div.hour
-{
-  background-color: #202020;
+  background-color: #222;
 }
 #results div.minute > div
 {
@@ -281,6 +277,10 @@ h1
   width: 48px;
   color: #666;
   text-align: center;
+}
+#results div.hour span.timestamp
+{
+  color: #888;
 }
 
 .clear
