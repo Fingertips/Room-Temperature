@@ -32,7 +32,7 @@ RT.Updater = Class.create({
         var color = 55 + Math.round(star * 200);
         color = color + ',' + color + ',' + color;
         out += '<div><div style="width: ' + width + '%; background-color: rgb(' + color + ')"></div>';
-        if (index == minute.user) {
+        if (index+1 == minute.user) {
           out += '<span></span>';
         }
         out += '</div>\n';
