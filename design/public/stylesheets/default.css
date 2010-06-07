@@ -134,56 +134,60 @@ h1
   color: #999;
   text-shadow: 0 1px 0 rgba(0,0,0,0.8);
 }
+#vote span
+{
+  display: block;
+}
 #vote label.first,
 #vote label.last
 {
   width: 21.875%;
 }
-#vote label.first div,
-#vote label.last div
+#vote label.first > span,
+#vote label.last > span
 {
   width: 85.7143%;
 }
-#vote label.first div
+#vote label.first > span
 {
   margin-left: 14.2857%;
 }
-#vote label div
+#vote label > span
 {
   height: 144px;
   background: url('images/star.png') 50% -144px no-repeat;
 }
-#vote label div:focus
+#vote label > span:focus
 {
   outline: none;
 }
-#vote label.hover div,
-#vote label div:focus div
+#vote label.hover > span,
+#vote label > span:focus
 {
   background-position: 50% -288px;
   color: #eee;
 }
-#vote label.active div,
-#vote label.active div:focus
+#vote label.active > span,
+#vote label.active > span:focus
 {
   background-position: 50% -432px;
 }
-#vote label.checked div,
-#vote label.selected div
+#vote label.checked > span,
+#vote label.selected > span
 {
   background-position: 50% -576px;
 }
-#vote label.checked.hover div,
-#vote label.selected.hover div,
-#vote label.checked div:focus,
-#vote label.selected div:focus
+#vote label.checked.hover > span,
+#vote label.selected.hover > span,
+#vote label.checked > span:focus,
+#vote label.selected > span:focus
 {
   background-position: 50% -720px;
 }
-#vote label.checked.active div,
-#vote label.selected.active div,
-#vote label.checked.active div:focus,
-#vote label.selected.active div:focus
+#vote label.checked.active > span,
+#vote label.selected.active > span,
+#vote label.checked.active > span:focus,
+#vote label.selected.active > span:focus
 {
   background-position: 50% -864px;
 }
@@ -191,10 +195,9 @@ h1
 {
   display: none;
 }
-#vote span
+#vote label > span > span
 {
   padding-top: 116px;
-  display: block;
   text-align: center;
   text-transform: uppercase;
 }
