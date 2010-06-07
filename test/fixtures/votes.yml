@@ -1,0 +1,32 @@
+alice_first_vote:
+  client_token: Sk4vJVpv
+  stars: 2
+  timestamp: 1275904800
+alice_second_vote:
+  client_token: Sk4vJVpv
+  stars: 4
+  timestamp: 1275904860
+bob_first_vote:
+  client_token: RzHeQoof
+  stars: 2
+  timestamp: 1275904802
+bob_second_vote:
+  client_token: RzHeQoof
+  stars: 2
+  timestamp: 1275904862
+bob_third_vote:
+  client_token: RzHeQoof
+  stars: 5
+  timestamp: 1275904722
+clive_first_vote:
+  client_token: 7izkjy8G
+  stars: 1
+  timestamp: 1275904811
+clive_second_vote:
+  client_token: 7izkjy8G
+  stars: 2
+  timestamp: 1275904871
+clive_third_vote:
+  client_token: 7izkjy8G
+  stars: 5
+  timestamp: 1275904931

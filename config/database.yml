@@ -1,0 +1,18 @@
+development:
+  adapter: mysql
+  encoding: utf8
+  collation: utf8_bin
+  reconnect: false
+  database: room_temperature_development
+test:
+  adapter: mysql
+  encoding: utf8
+  collation: utf8_bin
+  reconnect: false
+  database: room_temperature_test
+production:
+  adapter: mysql
+  encoding: utf8
+  collation: utf8_bin
+  reconnect: false
+  database: room_temperature_production
