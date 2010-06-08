@@ -9,15 +9,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100607100612) do
+ActiveRecord::Schema.define(:version => 20100608073942) do
+
+  create_table "rooms", :force => true do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "votes", :force => true do |t|
     t.string  "client_token"
     t.integer "stars"
     t.integer "timestamp"
+    t.integer "room_id"
   end
 
   add_index "votes", ["client_token"], :name => "index_votes_on_client_token"
+  add_index "votes", ["room_id"], :name => "index_votes_on_room_id"
   add_index "votes", ["timestamp"], :name => "index_votes_on_timestamp"
 
 end
