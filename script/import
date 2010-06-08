@@ -1,0 +1,163 @@
+#!/usr/bin/env ruby
+
+require File.expand_path('../../config/environment',  __FILE__)
+require 'active_support'
+require 'cgi'
+
+def fix_encoding(string, broken=true)
+  return if string.nil?
+  return string unless broken
+  string.unpack('U*').pack('C*') 
+end
+
+class ActiveRecord::Base
+  def self.spew(string)
+    $stdout.write(string)
+    $stdout.flush
+  end
+  
+  def self.batched(batch_size=1024, options={}, &block)
+    spew "Processing #{name} (#{(count / batch_size.to_f).ceil} batches): "
+    batch = 0
+    spawns = []
+    while(!(records = find(:all, options.merge(:offset => (batch * batch_size), :limit => batch_size))).empty?)
+      spew "."
+      records.each(&block)
+      batch += 1
+    end
+    spew "\n"
+  end
+end
+
+
+module Exporter
+  class Base < ActiveRecord::Base
+    self.abstract_class = true
+    establish_connection("previous")
+    
+    def self.table_name
+      name.split('::').last.tableize.singularize
+    end
+  end
+  
+  class Account < Base
+  end
+  
+  class AvailableProfile < Base
+  end
+  
+  class Assessment < Base
+  end
+  
+  class Respondent < Base
+    has_one :ratee, :class_name => 'Exporter::Ratee'
+    
+    def translated_status
+      case status
+      when 'done'
+        'completed'
+      when 'editable'
+        'fresh'
+      else
+        status
+      end
+    end
+  end
+  
+  class Ratee < Base
+    belongs_to :subject, :class_name => 'Exporter::Respondent', :foreign_key => 'respondent_id'
+  end
+  
+  class Rater < Base
+    belongs_to :subject, :class_name => 'Exporter::Respondent', :foreign_key => 'ratee_id'
+    belongs_to :respondent, :class_name => 'Exporter::Respondent', :foreign_key => 'respondent_id'
+  end
+  
+  class Response < Base
+    belongs_to :respondent, :class_name => 'Exporter::Respondent'
+    
+    def item_reference
+      CGI.unescape(name).split('.')[-2..-1].join('.')
+    end
+  end
+end
+
+imported_at = Date.new(2010, 1, 4)
+
+Exporter::Account.batched((Exporter::Account.count / 5)) do |account|
+  Account.mass_assign(
+    :created_at => account.create_timestamp,
+    :updated_at => account.timestamp,
+    :id => account.id,
+    :username => fix_encoding(account.username, account.create_timestamp < imported_at),
+    :full_name => fix_encoding(account.fullname, account.create_timestamp < imported_at),
+    :role => account.role,
+    :email => account.email,
+    :hashed_password => account.password,
+    :organization => fix_encoding(account.organization, account.create_timestamp < imported_at),
+    :status => (account.status == 'locked') ? 'blocked' : account.status
+  ).save(false)
+end
+
+Exporter::AvailableProfile.batched do |available_profile|
+  ProfileAssignment.mass_assign(
+    :account_id => available_profile.account_id,
+    :profile_reference => available_profile.profile[1..-1]
+  ).save(false)
+end
+
+Exporter::Assessment.batched do |assessment|
+  Assessment.mass_assign(
+    :created_at => assessment.create_timestamp,
+    :updated_at => assessment.timestamp,
+    :id => assessment.id,
+    :account_id => assessment.account_id,
+    :profile_reference => assessment.profile[1..-1],
+    :name => fix_encoding(assessment.name, assessment.create_timestamp < imported_at),
+    :ends_on => assessment.end_date,
+    :force_closed => (assessment.status == 'closed') ? true : false
+  ).save(false)
+end
+
+urikey_to_administration_id = {}
+respondent_to_subject = {}
+
+Exporter::Ratee.batched do |ratee|
+  administration = Administration.mass_assign(
+    :assessment_id => ratee.assessment_id,
+    :token => ratee.subject.urikey,
+    :status => ratee.subject.translated_status, 
+    :subject_attributes => {
+      :full_name => fix_encoding(ratee.subject.fullname, ratee.timestamp < imported_at),
+      :email => ratee.subject.email,
+      :gender => ratee.gender
+    }
+  )
+  administration.save(false)
+  urikey_to_administration_id[administration.token] = administration.id
+  respondent_to_subject[ratee.respondent_id] = administration.subject_id
+end
+
+Exporter::Rater.batched do |rater|
+  administration = Administration.mass_assign(
+    :assessment_id => rater.subject.ratee.assessment_id,
+    :token => rater.respondent.urikey,
+    :status => rater.respondent.translated_status, 
+    :subject_id => respondent_to_subject[rater.ratee_id],
+    :respondent_attributes => {
+      :full_name => fix_encoding(rater.respondent.fullname, rater.timestamp < imported_at),
+      :email => rater.respondent.email,
+      :role => rater.role
+    }
+  )
+  administration.save(false)
+  urikey_to_administration_id[administration.token] = administration.id
+end
+
+Exporter::Response.batched do |response|
+  Response.mass_assign(
+    :administration_id => urikey_to_administration_id[response.respondent.urikey],
+    :item_reference => response.item_reference,
+    :value => response.value
+  ).save(false)
+end
