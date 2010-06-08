@@ -23,7 +23,7 @@ describe Standing, "when no client token is set" do
     latest = @standing.latest
     
     latest.should.has_key('minutes')
-    latest['minutes'].length.should == Standing::MAX_UPDATES
+    latest['minutes'].length.should == 6 # Only six actually contain data
     
     latest['minutes'][0,2].should == [
       { 'timestamp' => 1275905040, 'stars' => [0.0, 0.11, 0.0, 0.0, 0.33]   },
@@ -59,14 +59,14 @@ describe Standing, "when a the client token is set" do
     latest = @standing.latest
     
     latest.should.has_key('minutes')
-    latest['minutes'].length.should == Standing::MAX_UPDATES
+    latest['minutes'].length.should == 6 # Only six actually contain data
     
     latest['minutes'][0,2].should == [
       { 'timestamp' => 1275905040, 'stars' => [0.0, 0.11, 0.0, 0.0, 0.33]   },
       { 'timestamp' => 1275904980, 'stars' => [0.04, 0.37, 0.0, 0.04, 0.56] }
     ]
     
-    latest['yours'].should == {1275904680=>5, 1275904860=>2, 1275904800=>2}
+    latest['yours'].should == { 1275904860 => 2, 1275904800 => 2 }
   end
 end
 
@@ -111,11 +111,8 @@ describe Standing do
   it "returns the last intervals" do
     Standing.stubs(:last_interval).returns(1275913120)
     Standing.last_intervals[0,5].should == [
-      1275913120,
-      1275913060,
-      1275913000,
-      1275912940,
-      1275912880
+      1275902320, 1275902380, 1275902440, 1275902500, 1275902560
     ]
+    
   end
 end

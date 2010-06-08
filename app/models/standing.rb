@@ -65,14 +65,18 @@ class Standing
   end
   
   def self.last_intervals
-    last_interval = last_interval()
-    (0..MAX_UPDATES-1).map { |offset| last_interval - (offset * INTERVAL_LENGTH) }
+    first_interval = last_interval() - (MAX_UPDATES * INTERVAL_LENGTH)
+    (0..MAX_UPDATES).map { |offset| first_interval + (offset * INTERVAL_LENGTH) }
   end
   
   def latest
-    minutes = (self.class.last_intervals.map do |timestamp|
-      self.class.on(@room, timestamp)
-    end)
-    merge_client_votes({ 'intent' => 'replace', 'minutes' => minutes })
+    minutes = []
+    self.class.last_intervals.each do |timestamp|
+      current = self.class.on(@room, timestamp)
+      unless minutes.empty? and (current['stars'] == [0.0,0.0,0.0,0.0,0.0])
+        minutes << current
+      end
+    end
+    merge_client_votes({ 'intent' => 'replace', 'minutes' => minutes.reverse })
   end
 end
