@@ -14,8 +14,8 @@ class Standing
   end
   
   def merge_client_votes(updates)
-    if @client_token
-      end_interval   = updates['minutes'].first['timestamp']
+    if @client_token and !updates.empty? and !updates['minutes'].empty?
+      end_interval   = updates['minutes'].first['timestamp'] + INTERVAL_LENGTH
       begin_interval = updates['minutes'].last['timestamp']
       yours = @room.votes.find_in_interval_with_client_token(end_interval, begin_interval, @client_token).inject({}) do |yours, vote|
         yours[self.class.discretize(vote.timestamp)] = vote.stars

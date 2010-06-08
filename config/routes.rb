@@ -1,6 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :rooms
-  map.resource  :standing
+  map.resources :rooms do |room|
+    room.resources :votes
+    room.resource :standing
+  end
   map.resources :votes
   map.root :controller => 'rooms', :action => 'index'
   

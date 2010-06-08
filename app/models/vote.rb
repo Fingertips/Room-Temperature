@@ -4,7 +4,7 @@ class Vote < ActiveRecord::Base
   before_save :set_timestamp
   
   def set_timestamp
-    self.timestamp = Time.now.to_i
+    self.timestamp ||= Time.now.to_i
   end
   
   def self.unused_client_token

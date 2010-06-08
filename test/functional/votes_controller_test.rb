@@ -51,4 +51,19 @@ describe "On the", VotesController, "a visitor" do
     standing.should.has_key?('minutes')
     standing['minutes'].length.should == 2
   end
+  
+  it "sees own votes along with the new standings" do
+    client_token = votes(:alice_first_vote).client_token
+    request.cookies['token'] = client_token
+    
+    room = rooms(:nsconf)
+    vote = room.votes.build(:stars => 2, :client_token => client_token, :timestamp => Standing.last_interval - 100)
+    vote.save!
+    
+    post :create, :room_id => room.to_param, :stars => 3, :since => (Standing.last_interval - 120)
+    status.should.be :created
+    
+    updates = JSON.parse(response.body)
+    updates.should.has_key('yours')
+  end
 end

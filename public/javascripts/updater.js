@@ -9,7 +9,8 @@ RT.Updater = Class.create({
     this.results = $('results');
     this.request = false;
     this.stars = new RT.Stars(this.form);
-    new Ajax.Request('/standing', {
+    var standingUrl = this.form.getAttribute('action').split('/').slice(0, -1).concat('standing').join('/');
+    new Ajax.Request(standingUrl, {
       method: 'GET',
       onSuccess: function(response) {
         this.render(response.responseText);
@@ -25,20 +26,21 @@ RT.Updater = Class.create({
     out = '';  // TODO Find out what's the fastest way to build the html
     data.minutes.each(function(minute) {
       var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
-      var minutes = timestamp.getMinutes();
-      out += '<div class="minute' + (minutes % 15 == 0 ? ' separator' : '') + (minutes === 0 ? ' hour' : '') + '">\n';
+      var timestamp_minutes = timestamp.getMinutes();
+      var yours = data.yours && data.yours[minute.timestamp];
+      out += '<div class="minute' + (timestamp_minutes % 15 == 0 ? ' separator' : '') + (timestamp_minutes === 0 ? ' hour' : '') + '">\n';
       minute.stars.each(function(star, index) {
         var width = star * 100;
         var color = 55 + Math.round(star * 200);
         color = color + ',' + color + ',' + color;
         out += '<div><div style="width: ' + width + '%; background-color: rgb(' + color + ')"></div>';
-        if (index+1 == minute.user) {
+        if (yours == index+1) {
           out += '<span></span>';
         }
         out += '</div>\n';
       });
-      if (minutes % 15 == 0) {
-        out += '<span class="timestamp" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (minutes < 10 ? '0' : '') + minutes + '</span>'
+      if (timestamp_minutes % 15 == 0) {
+        out += '<span class="timestamp" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (timestamp_minutes < 10 ? '0' : '') + timestamp_minutes + '</span>'
       }
       out += '</div>\n';
     });
@@ -69,6 +71,7 @@ RT.Updater = Class.create({
       this.progressBar.setStyle({width: '0'});
       $(document.body).addClassName('loading');
       var url = this.form.getAttribute('action') + '?since=' + this.latest;
+      
       var latest = this.latest;
       this.request = new Ajax.Request(url, {
         parameters: this.form.serialize(true),
