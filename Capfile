@@ -14,10 +14,10 @@ set :git_shallow_clone, 1
 namespace :rt do
   desc "Make sure the app can write its JavaScript cache"
   task :setup_javascript_cache do
-    all_js = "#{current_path}/public/javascripts/all.js"
-    sudo "rm -rf #{all_js}"
-    sudo "touch #{all_js}"
-    sudo "chown app:wheel #{all_js}"
+    js_cache_dir = "#{current_path}/public/javascripts/cache"
+    sudo "rm -rf #{js_cache_dir}"
+    sudo "mkdir -p #{js_cache_dir}"
+    sudo "chown -R app:wheel #{js_cache_dir}"
   end
 end
 
