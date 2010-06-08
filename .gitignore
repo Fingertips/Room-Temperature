@@ -3,3 +3,4 @@ log
 tmp
 mkmf.log
 vendor/plugins/generator-san
+public/javascripts/all.js

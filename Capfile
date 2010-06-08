@@ -11,7 +11,14 @@ set :scm, "git"
 set :branch, "master"
 set :git_shallow_clone, 1
 
-namespace :room_temperature do
+namespace :rt do
+  desc "Make sure the app can write its JavaScript cache"
+  task :setup_javascript_cache do
+    all_js = "#{current_path}/public/javascripts/all.js"
+    sudo "rm -rf #{all_js}"
+    sudo "touch #{all_js}"
+    sudo "chown app:wheel #{all_js}"
+  end
 end
 
 namespace :deploy do
@@ -26,3 +33,5 @@ end
 
 after "deploy",            "notify:deploy"
 after "deploy:migrations", "notify:migrations"
+
+after "deploy:symlink",    "rt:setup_javascript_cache"
