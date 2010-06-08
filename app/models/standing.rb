@@ -1,12 +1,33 @@
-require 'active_support/core_ext'
-
 class Standing
+  class FakeCache
+    def get(*) end
+    def add(*) end
+  end
+  
+  class << self; attr_accessor :_cache end
+  
   INTERVAL_LENGTH = 60
   MAX_UPDATES     = 180
   
   def initialize(attributes={})
     @room = attributes[:room]
     @client_token = attributes[:client_token]
+  end
+  
+  def self.cache
+    unless Rails.env == 'test'
+      if @_cache.nil?
+        begin
+          @_cache = MemCache.new('127.0.0.1', :namespace => 'room-temperature')
+          @_cache.get('test')
+        rescue MemCache::MemCacheError => e
+          Rails.logger.info("  MEMCACHE: #{e.message}")
+          @_cache = FakeCache.new
+        end
+      end; @_cache
+    else
+      @_cache ||= FakeCache.new
+    end
   end
   
   def self.discretize(timestamp)
@@ -43,16 +64,22 @@ class Standing
   end
   
   def self.on(room, timestamp)
-    stars = [[0,0.56],[1,0.33],[2,0.11]].inject([0,0,0,0,0]) do |stars, (offset, weight)|
-      begin_interval = timestamp - (offset * INTERVAL_LENGTH)
-      end_interval   = begin_interval - INTERVAL_LENGTH
-      votes          = room.votes.find_in_interval(begin_interval, end_interval)
-      votes.each do |vote|
-        stars[vote.stars-1] += (1.0 / votes.length) * weight
+    minute     = nil
+    minute_key = [room.slug, timestamp].join(':')
+    unless minute = cache.get(minute_key)
+      stars = [[0,0.56],[1,0.33],[2,0.11]].inject([0,0,0,0,0]) do |stars, (offset, weight)|
+        begin_interval = timestamp - (offset * INTERVAL_LENGTH)
+        end_interval   = begin_interval - INTERVAL_LENGTH
+        votes          = room.votes.find_in_interval(begin_interval, end_interval)
+        votes.each do |vote|
+          stars[vote.stars-1] += (1.0 / votes.length) * weight
+        end
+        stars
       end
-      stars
+      minute = { 'timestamp' => timestamp, 'stars' => stars.map { |star| (star * 100.0).round / 100.0 } }
+      cache.add(minute_key, minute, 5.minutes)
     end
-    { 'timestamp' => timestamp, 'stars' => stars.map { |star| (star * 100.0).round / 100.0 } }
+    minute
   end
   
   def since(timestamp)
