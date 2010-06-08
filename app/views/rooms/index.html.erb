@@ -1,0 +1,7 @@
+<% @body_class = 'index' %>
+<h1>Room Temperature</h1>
+<ul>
+  <% @rooms.each do |room| %>
+    <li><%= link_to room.title, nice_room_path(room.slug) %></li>
+  <% end %>
+</ul>
