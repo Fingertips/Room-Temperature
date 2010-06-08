@@ -1,4 +1,6 @@
 class Vote < ActiveRecord::Base
+  belongs_to :room
+  
   before_save :set_timestamp
   
   def set_timestamp
@@ -13,10 +15,6 @@ class Vote < ActiveRecord::Base
     client_token
   end
   
-  def self.find_in_interval(timestamp)
-    find(:all, :conditions => ['timestamp <= ? AND timestamp > ?', timestamp, (timestamp - Standing::INTERVAL_LENGTH)])
-  end
-  
   validates_inclusion_of :stars, :in => 1..5, :message => 'should be 1, 2, 3, 4, or 5'
-  validates_presence_of :client_token
+  validates_presence_of :client_token, :room_id
 end

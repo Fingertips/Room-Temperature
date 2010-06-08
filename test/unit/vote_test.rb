@@ -13,7 +13,7 @@ describe Vote do
   end
   
   it "sets a timestamp when saving the vote" do
-    vote = Vote.new(:stars => 3, :client_token => 'adE1Ie7C')
+    vote = Vote.new(:room_id => 1, :stars => 3, :client_token => 'adE1Ie7C')
     vote.timestamp.should.be.nil
     vote.save!
     vote.timestamp.should.not.be.nil
@@ -21,9 +21,10 @@ describe Vote do
 end
 
 describe Vote, "concerning validation" do
-  it "is invalid without a client token and value" do
+  it "is invalid without a client token, value, and room id" do
     vote = Vote.create
     vote.errors[:stars].should.not.be.blank
     vote.errors[:client_token].should.not.be.blank
+    vote.errors[:room_id].should.not.be.blank
   end
 end

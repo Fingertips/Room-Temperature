@@ -3,7 +3,7 @@ require File.expand_path('../../test_helper', __FILE__)
 describe "On the", VotesController, "a visitor" do
   it "submits a vote" do
     lambda {
-      post :create, :stars => 2
+      post :create, :room_id => rooms(:nsconf).to_param, :stars => 2
     }.should.differ('Vote.count', +1)
     status.should.be :created
     
@@ -17,7 +17,7 @@ describe "On the", VotesController, "a visitor" do
     request.cookies['token'] = client_token
     
     lambda {
-      post :create, {:stars => 3}
+      post :create, :room_id => rooms(:nsconf).to_param, :stars => 3
     }.should.differ('Vote.count', +1)
     status.should.be :created
     
@@ -26,7 +26,7 @@ describe "On the", VotesController, "a visitor" do
   
   it "sees new standings when submitting a timestamp along with the vote" do
     lambda {
-      post :create, {:stars => 3, :since => (Standing.end_last_interval - 120)}
+      post :create, :room_id => rooms(:nsconf).to_param, :stars => 3, :since => (Standing.last_interval - 120)
     }.should.differ('Vote.count', +1)
     status.should.be :created
     standing = JSON.parse(response.body)
@@ -36,7 +36,7 @@ describe "On the", VotesController, "a visitor" do
   
   it "shows validations errors when the vote is not valid" do
     lambda {
-      post :create
+      post :create, :room_id => rooms(:nsconf).to_param
     }.should.not.differ('Vote.count')
     status.should.be :unprocessable_entity
     JSON.parse(response.body).should == [["stars", "should be 1, 2, 3, 4, or 5"]]
@@ -44,7 +44,7 @@ describe "On the", VotesController, "a visitor" do
   
   it "sees new standings when creating a vote with timestamp, but without star rating" do
     lambda {
-      post :create, {:since => (Standing.end_last_interval - 120)}
+      post :create, :room_id => rooms(:nsconf).to_param, :since => (Standing.last_interval - 120)
     }.should.not.differ('Vote.count')
     status.should.be :ok
     standing = JSON.parse(response.body)

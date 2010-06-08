@@ -1,0 +1,6 @@
+nsconf:
+  title: NSConference MINI 2010
+  slug: nsconf
+test:
+  title: Test Room
+  slug: test
