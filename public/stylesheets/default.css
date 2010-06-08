@@ -93,6 +93,23 @@ body.loading #progress
   margin: 0 8px;
 }
 
+#credits a
+{
+  color: #fff;
+}
+#credits a:hover
+{
+  color: #ddd;
+  background-color: transparent;
+  outline: none;
+}
+#credits a:active
+{
+  color: #eee;
+  background-color: transparent;
+  outline: none;
+}
+
 h1
 {
   margin: 0 0 -8px 0;
