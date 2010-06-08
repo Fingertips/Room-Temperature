@@ -2,3 +2,4 @@
 log
 tmp
 mkmf.log
+vendor/plugins/generator-san
