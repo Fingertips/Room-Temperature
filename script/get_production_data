@@ -1,0 +1,3 @@
+#!/bin/bash
+ssh miller.fngtps.com mysqldump room_temperature_production > tmp/room_temperature_production.sql
+mysql -u root room_temperature_development < tmp/room_temperature_production.sql
