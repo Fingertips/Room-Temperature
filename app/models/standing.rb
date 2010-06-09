@@ -65,7 +65,7 @@ class Standing
     since
   end
   
-  def self.on(room, timestamp, recurse=3)
+  def self.on(room, timestamp, recurse=6)
     minute     = nil
     minute_key = [room.slug, timestamp].join(':')
     unless minute = cache.get(minute_key)
@@ -77,7 +77,8 @@ class Standing
       end
       stars.each_with_index do |star, index|
         if previous_minute
-          stars[index] = ((star + previous_minute['stars'][index])/2).round(2)
+          new_star = (star*0.5 + previous_minute['stars'][index]*0.5)
+          stars[index] = (new_star < 0.01) ? 0 : new_star.round(2)
         else
           stars[index] = star.round(2)
         end
