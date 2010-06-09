@@ -147,10 +147,12 @@ h1
   border-color: #444 #555 #666 #555;
 }
 
-#vote form  /* Needed for touch support */
+#vote form
 {
   float: left;
   width: 100%;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 #vote label
 {

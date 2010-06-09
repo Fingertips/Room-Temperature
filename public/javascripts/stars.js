@@ -4,7 +4,6 @@ RT.Stars = Class.create({
   initialize: function(form) {
     this.form = $(form);
     this.updateChecked();
-    S2.UI.disableTextSelection($('vote'));
     
     if (!Prototype.Browser.MobileSafari) {
       this.form.on('mousedown', 'label', this.down.bind(this));
