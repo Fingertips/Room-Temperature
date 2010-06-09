@@ -22,33 +22,43 @@ RT.Updater = Class.create({
   
   render: function(json) {
     var data = json.evalJSON();
-    if (data.minutes.length == 0) return false;
-    this.latest = data.minutes.first().timestamp;
-    out = '';  // TODO Find out what's the fastest way to build the html
-    data.minutes.each(function(minute) {
-      var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
-      var timestamp_minutes = timestamp.getMinutes();
-      var yours = data.yours && data.yours[minute.timestamp];
-      out += '<div class="minute' + (timestamp_minutes % 15 == 0 ? ' separator' : '') + (timestamp_minutes === 0 ? ' hour' : '') + '">\n';
-      minute.stars.each(function(star, index) {
-        var width = star * 100;
-        var color = 55 + Math.round(star * 200);
-        color = color + ',' + color + ',' + color;
-        out += '<div><div style="width: ' + width + '%; background-color: rgb(' + color + ')"></div>';
-        if (yours == index+1) {
-          out += '<span></span>';
+    if (data.minutes.length > 0) {
+      this.latest = data.minutes.first().timestamp;
+      var out = '';
+      data.minutes.each(function(minute) {
+        var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
+        var timestamp_minutes = timestamp.getMinutes();
+        var yours = data.yours[minute.timestamp];
+        var width = undefined, color = undefined;
+        out += '<div class="minute' + (timestamp_minutes % 15 === 0 ? ' separator' : '') + (timestamp_minutes === 0 ? ' hour' : '') + '">\n';
+        minute.stars.each(function(result, index) {
+          if (result > 0) {
+            width = result * 100 + '%'
+            color = 55 + Math.round(result * 200);
+          } else {
+            width = '1px';
+            color = undefined;
+          }
+          out += '<div><div style="width: ' + width;
+          if (color) {
+            out += '; background-color: rgb(' + color + ',' + color + ',' + color + ')';
+          }
+          out += '"></div>';
+          if (yours == index + 1) {
+            out += '<span></span>';
+          }
+          out += '</div>\n';
+        });
+        if (timestamp_minutes % 15 === 0) {
+          out += '<span class="timestamp" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (timestamp_minutes < 10 ? '0' : '') + timestamp_minutes + '</span>'
         }
         out += '</div>\n';
       });
-      if (timestamp_minutes % 15 == 0) {
-        out += '<span class="timestamp" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (timestamp_minutes < 10 ? '0' : '') + timestamp_minutes + '</span>'
+      if (data.intent == 'replace') {
+        this.results.update(out);
+      } else {
+        this.results.insert({top: out});
       }
-      out += '</div>\n';
-    });
-    if (data.intent == 'replace') {
-      this.results.update(out);
-    } else {
-      this.results.insert({top: out});
     }
   },
   

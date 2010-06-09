@@ -270,7 +270,7 @@ h1
 }
 #results div.separator
 {
-  background-color: #222;
+  background-color: #111;
 }
 #results div.minute > div
 {
@@ -282,7 +282,7 @@ h1
 {
   height: 4px;
   margin: 0 auto;
-  background-color: #fff;
+  background-color: #282828;
 }
 #results div.minute > div span
 {
