@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=768px">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <title><%=h [@title, 'Room Temperature'].compact.join(' · ') %></title>
 <%= stylesheet_link_tag 'default' %>
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="apple-touch-startup-image" href="/startup.png" />
 </head>
 
 <body<%= @body_class ? " class=\"#{@body_class}\"" : '' %>>
