@@ -1,3 +1,4 @@
+<% @include_javascript = true %>
 <h1><%=h @title = @room.title %></h1>
 <div id="vote">
   <form action="<%= room_votes_path(@room) %>" method="post">
