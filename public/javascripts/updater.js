@@ -7,6 +7,7 @@ RT.Updater = Class.create({
     this.form = $('vote').down('form');
     this.progressBar = $('progress').down('div');
     this.results = $('results');
+    this.yoursCount = 0;
     this.request = false;
     this.stars = new RT.Stars(this.form);
     var standingUrl = this.form.getAttribute('action').split('/').slice(0, -1).concat('standing').join('/');
@@ -25,12 +26,13 @@ RT.Updater = Class.create({
     if (data.minutes.length > 0) {
       this.latest = data.minutes.first().timestamp;
       var out = '';
-      data.minutes.each(function(minute) {
+      data.minutes.reverse().each(function(minute) {
+        var row = ''
         var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
         var timestamp_minutes = timestamp.getMinutes();
         var yours = data.yours[minute.timestamp];
         var width = undefined, color = undefined;
-        out += '<div class="minute' + (timestamp_minutes % 15 === 0 ? ' separator' : '') + (timestamp_minutes === 0 ? ' hour' : '') + '">\n';
+        row += '<div class="minute' + (timestamp_minutes % 15 === 0 ? ' separator' : '') + (timestamp_minutes === 0 ? ' hour' : '') + '">\n';
         minute.stars.each(function(result, index) {
           if (result > 0) {
             width = result * 100 + '%'
@@ -39,21 +41,23 @@ RT.Updater = Class.create({
             width = '1px';
             color = undefined;
           }
-          out += '<div><div style="width: ' + width;
+          row += '<div><div style="width: ' + width;
           if (color) {
-            out += '; background-color: rgb(' + color + ',' + color + ',' + color + ')';
+            row += '; background-color: rgb(' + color + ',' + color + ',' + color + ')';
           }
-          out += '"></div>';
+          row += '"></div>';
           if (yours == index + 1) {
-            out += '<span></span>';
+            this.yoursCount += 1;
+            row += '<span style="z-index: ' + this.yoursCount + '"></span>';
           }
-          out += '</div>\n';
-        });
+          row += '</div>\n';
+        }.bind(this));
         if (timestamp_minutes % 15 === 0) {
-          out += '<span class="timestamp" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (timestamp_minutes < 10 ? '0' : '') + timestamp_minutes + '</span>'
+          row += '<span class="timestamp" title="' + timestamp.toLocaleString() + '">' + timestamp.getHours() + ':' + (timestamp_minutes < 10 ? '0' : '') + timestamp_minutes + '</span>'
         }
-        out += '</div>\n';
-      });
+        row += '</div>\n';
+        out = row + out;
+      }.bind(this));
       if (data.intent == 'replace') {
         this.results.update(out);
       } else {
