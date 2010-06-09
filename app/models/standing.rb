@@ -65,21 +65,25 @@ class Standing
     since
   end
   
-  def self.on(room, timestamp)
+  def self.on(room, timestamp, recurse=3)
     minute     = nil
     minute_key = [room.slug, timestamp].join(':')
     unless minute = cache.get(minute_key)
-      stars = [[0,0.56],[1,0.33],[2,0.11]].inject([0,0,0,0,0]) do |stars, (offset, weight)|
-        begin_interval = timestamp - (offset * INTERVAL_LENGTH)
-        end_interval   = begin_interval - INTERVAL_LENGTH
-        votes          = room.votes.find_in_interval(begin_interval, end_interval)
-        votes.each do |vote|
-          stars[vote.stars-1] += (1.0 / votes.length) * weight
-        end
-        stars
+      previous_minute = (recurse > 0) ? on(room, timestamp - INTERVAL_LENGTH, recurse-1) : nil
+      end_interval    = timestamp - INTERVAL_LENGTH
+      votes           = room.votes.find_in_interval(timestamp, end_interval)
+      stars = votes.inject([0.0,0.0,0.0,0.0,0.0]) do |stars, vote|
+        stars[vote.stars-1] += (1.0 / votes.length); stars
       end
-      minute = { 'timestamp' => timestamp, 'stars' => stars.map { |star| (star * 100.0).round / 100.0 } }
-      cache.add(minute_key, minute, 5.minutes)
+      stars.each_with_index do |star, index|
+        if previous_minute
+          stars[index] = ((star + previous_minute['stars'][index])/2).round(2)
+        else
+          stars[index] = star.round(2)
+        end
+      end
+      minute = { 'timestamp' => timestamp, 'stars' => stars }
+      cache.add(minute_key, minute, 10.minutes)
     end
     minute
   end

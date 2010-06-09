@@ -9,11 +9,11 @@ describe Standing, "when no client token is set" do
     Standing.stubs(:last_interval).returns(1275905040)
     @standing.since(1275904740).should == {
       'minutes' => [
-        { 'timestamp' => 1275905040, 'stars' => [0.0, 0.11, 0.0, 0.0, 0.33]   },
-        { 'timestamp' => 1275904980, 'stars' => [0.04, 0.37, 0.0, 0.04, 0.56] },
-        { 'timestamp' => 1275904920, 'stars' => [0.11, 0.78, 0.0, 0.11, 0.0]  },
-        { 'timestamp' => 1275904860, 'stars' => [0.19, 0.52, 0.0, 0.19, 0.11] },
-        { 'timestamp' => 1275904800, 'stars' => [0.0, 0.56, 0.0, 0.0, 0.33]   }
+        { 'timestamp' => 1275905040, 'stars' => [0.05, 0.17, 0.0, 0.05, 0.25]   },
+        { 'timestamp' => 1275904980, 'stars' => [0.05, 0.42, 0.0, 0.05, 0.5 ] },
+        { 'timestamp' => 1275904920, 'stars' => [0.09, 0.71, 0.0, 0.09, 0.13]  },
+        { 'timestamp' => 1275904860, 'stars' => [0.17, 0.42, 0.0, 0.17, 0.13] },
+        { 'timestamp' => 1275904800, 'stars' => [0.0, 0.5, 0.0, 0.0, 0.25   ]   }
       ]
     }
   end
@@ -26,8 +26,8 @@ describe Standing, "when no client token is set" do
     latest['minutes'].length.should == 6 # Only six actually contain data
     
     latest['minutes'][0,2].should == [
-      { 'timestamp' => 1275905040, 'stars' => [0.0, 0.11, 0.0, 0.0, 0.33]   },
-      { 'timestamp' => 1275904980, 'stars' => [0.04, 0.37, 0.0, 0.04, 0.56] }
+      { 'timestamp' => 1275905040, 'stars' => [0.05, 0.17, 0.0, 0.05, 0.25] },
+      { 'timestamp' => 1275904980, 'stars' => [0.05, 0.42, 0.0, 0.05, 0.5]  }
     ]
   end
 end
@@ -41,11 +41,11 @@ describe Standing, "when a the client token is set" do
     Standing.stubs(:last_interval).returns(1275905040)
     @standing.since(1275904740).should == {
       'minutes' => [
-        { 'timestamp' => 1275905040, 'stars' => [0.0, 0.11, 0.0, 0.0, 0.33]   },
-        { 'timestamp' => 1275904980, 'stars' => [0.04, 0.37, 0.0, 0.04, 0.56] },
-        { 'timestamp' => 1275904920, 'stars' => [0.11, 0.78, 0.0, 0.11, 0.0]  },
-        { 'timestamp' => 1275904860, 'stars' => [0.19, 0.52, 0.0, 0.19, 0.11] },
-        { 'timestamp' => 1275904800, 'stars' => [0.0, 0.56, 0.0, 0.0, 0.33]   }
+        { 'timestamp' => 1275905040, 'stars' => [0.05, 0.17, 0.0, 0.05, 0.25]   },
+        { 'timestamp' => 1275904980, 'stars' => [0.05, 0.42, 0.0, 0.05, 0.5 ] },
+        { 'timestamp' => 1275904920, 'stars' => [0.09, 0.71, 0.0, 0.09, 0.13]  },
+        { 'timestamp' => 1275904860, 'stars' => [0.17, 0.42, 0.0, 0.17, 0.13] },
+        { 'timestamp' => 1275904800, 'stars' => [0.0, 0.5, 0.0, 0.0, 0.25   ]   }
       ],
       'yours' => {
         1275904860 => 2,
@@ -62,8 +62,8 @@ describe Standing, "when a the client token is set" do
     latest['minutes'].length.should == 6 # Only six actually contain data
     
     latest['minutes'][0,2].should == [
-      { 'timestamp' => 1275905040, 'stars' => [0.0, 0.11, 0.0, 0.0, 0.33]   },
-      { 'timestamp' => 1275904980, 'stars' => [0.04, 0.37, 0.0, 0.04, 0.56] }
+      { 'timestamp' => 1275905040, 'stars' => [0.05, 0.17, 0.0, 0.05, 0.25] },
+      { 'timestamp' => 1275904980, 'stars' => [0.05, 0.42, 0.0, 0.05, 0.5]  }
     ]
     
     latest['yours'].should == { 1275904860 => 2, 1275904800 => 2 }
@@ -94,11 +94,11 @@ describe Standing do
   
   it "returns the standing on a certain timestamp" do
     Standing.on(rooms(:nsconf), 1275904980).should == {
-      'stars'     => [0.04, 0.37, 0.0, 0.04, 0.56],
+      'stars'     => [0.05, 0.42, 0.0, 0.05, 0.5],
       'timestamp' => 1275904980
     }
     Standing.on(rooms(:nsconf), 1275904920).should == {
-      'stars'     => [0.11, 0.78, 0.0, 0.11, 0.0],
+      'stars'     => [0.09, 0.71, 0.0, 0.09, 0.13],
       'timestamp' => 1275904920
     }
   end
