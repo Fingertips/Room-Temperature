@@ -22,6 +22,7 @@ RT.Updater = Class.create({
   
   render: function(json) {
     var data = json.evalJSON();
+    if (data.minutes.length == 0) return false;
     this.latest = data.minutes.first().timestamp;
     out = '';  // TODO Find out what's the fastest way to build the html
     data.minutes.each(function(minute) {
