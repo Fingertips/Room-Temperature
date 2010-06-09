@@ -1,3 +1,5 @@
+require 'memcache' rescue nil
+
 class Standing
   class FakeCache
     def get(*) end
