@@ -42,17 +42,19 @@ RT.Stars = Class.create({
   
   up: function(event, label) {
     this.isDown = false;
+    this.form.select('label > span').invoke('blur');
     label.down('input').setValue(true);
     this.updateChecked();
   },
   
   upOutside: function() {
     this.isDown = false;
+    this.form.select('label > span').invoke('blur');
     this.form.select('label').invoke('removeClassName', 'active').invoke('removeClassName', 'hover');
   },
   
   over: function(event, label) {
-    this.form.select('div').invoke('blur');
+    this.form.select('label > span').invoke('blur');
     if (this.isDown) {
       label.addClassName('active');
     }
