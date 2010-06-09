@@ -34,6 +34,26 @@ span.timestamp
 {
   font: 12px/1 "HelveticaNeue", helvetica, arial, sans-serif;
 }
+@media only screen and (max-device-width: 480px)
+{
+  body,
+  label
+  {
+    font-size: 10px;
+  }
+  h1
+  {
+    font-size: 15px;
+  }
+  .index h1
+  {
+    font-size: 29px;
+  }
+  span.timestamp
+  {
+    font-size: 8px;
+  }
+}
 
 a
 {
@@ -59,6 +79,15 @@ body
 {
   background: #000 url(images/bg.png) 0 0 repeat-x;
   color: #fff;
+}
+@media only screen and (max-device-width: 480px)
+{
+  body
+  {
+    height: 72px;
+    -moz-background-size: 128px;
+    -webkit-background-size: 128px;
+  }
 }
 body.loading #vote form,
 body.loading #progress
@@ -104,6 +133,13 @@ h1
   color: #fff;
   text-shadow: 0 1px 0 rgba(0,0,0,0.8);
 }
+@media only screen and (max-device-width: 480px)
+{
+  .index h1
+  {
+    padding-bottom: 10px;
+  }
+}
 #column p
 {
   width: 87.5%;
@@ -114,6 +150,13 @@ h1
   width: 88.5417%;
   margin: 0 auto;
   padding-top: 40px;
+}
+@media only screen and (max-device-width: 480px)
+{
+  .index ul
+  {
+    padding-top: 10px;
+  }
 }
 .index li
 {
@@ -183,7 +226,18 @@ h1
 #vote label > span
 {
   height: 144px;
-  background: url('images/star.png') 50% -144px no-repeat;
+  background: url('images/hd/star-unselected.png') 50% 50% no-repeat;
+  -moz-background-size: 144px;
+  -webkit-background-size: 144px;
+}
+@media only screen and (max-device-width: 480px)
+{
+  #vote label > span
+  {
+    height: 72px;
+    -moz-background-size: 72px;
+    -webkit-background-size: 72px;
+  }
 }
 #vote label > span:focus
 {
@@ -192,32 +246,32 @@ h1
 #vote label.hover > span,
 #vote label > span:focus
 {
-  background-position: 50% -288px;
+  background-image: url('images/hd/star-unselected-hover.png');
   color: #eee;
 }
 #vote label.active > span,
 #vote label.active > span:focus
 {
-  background-position: 50% -432px;
+  background-image: url('images/hd/star-unselected-active.png');
 }
 #vote label.checked > span,
 #vote label.selected > span
 {
-  background-position: 50% -576px;
+  background-image: url('images/hd/star-selected.png');
 }
 #vote label.checked.hover > span,
 #vote label.selected.hover > span,
 #vote label.checked > span:focus,
 #vote label.selected > span:focus
 {
-  background-position: 50% -720px;
+  background-image: url('images/hd/star-selected-hover.png');
 }
 #vote label.checked.active > span,
 #vote label.selected.active > span,
 #vote label.checked.active > span:focus,
 #vote label.selected.active > span:focus
 {
-  background-position: 50% -864px;
+  background-image: url('images/hd/star-selected-active.png');
 }
 #vote input
 {
@@ -228,6 +282,13 @@ h1
   padding-top: 116px;
   text-align: center;
   text-transform: uppercase;
+}
+@media only screen and (max-device-width: 480px)
+{
+  #vote label > span > span
+  {
+    padding-top: 58px;
+  }
 }
 
 #progress
@@ -293,7 +354,9 @@ h1
   display: block;
   position: absolute;
   top: -26px;
-  background: url('images/star.png') 50% 0 no-repeat;
+  background: url('images/hd/star-yours.png') 50% 0 no-repeat;
+  -moz-background-size: 144px;
+  -webkit-background-size: 144px;
 }
 #results div.minute span.timestamp
 {
@@ -303,6 +366,14 @@ h1
   width: 44px;
   color: #444;
   text-align: center;
+}
+@media only screen and (max-device-width: 480px)
+{
+  #results div.minute span.timestamp
+  {
+    left: -12px;
+    text-align: left;
+  }
 }
 #results div.hour span.timestamp
 {

@@ -2,23 +2,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=768px">
+<meta name="viewport" content="width=device-width">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title><%=h [@title, 'Room Temperature'].compact.join(' · ') %></title>
 <%= stylesheet_link_tag 'default' %>
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/icon.png">
-<link rel="apple-touch-startup-image" href="/startup.png" />
+<link rel="apple-touch-startup-image" href="/startup.png">
 </head>
 
 <body<%= @body_class ? " class=\"#{@body_class}\"" : '' %>>
 <div id="column">
   <%= yield :layout %>
+  <div class="clear"></div>
 </div>
 <div id="credits">
   <p>Made by <a href="http://www.fngtps.com">Fingertips</a>. Follow us <a href="http://twitter.com/fngtps">on Twitter</a>.</p>
 </div>
-<%= javascript_include_tag %w(prototype stars updater), :cache => 'cache/all' %>
+<%= javascript_include_tag %w(prototype stars updater preloader), :cache => 'cache/all' %>
 </body>
 </html>
