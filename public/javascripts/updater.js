@@ -27,10 +27,10 @@ RT.Updater = Class.create({
       this.latest = data.minutes.first().timestamp;
       var out = '';
       data.minutes.reverse().each(function(minute) {
-        var row = ''
+        var row = '';
         var timestamp = new Date(parseInt(minute.timestamp, 10) * 1000);
         var timestamp_minutes = timestamp.getMinutes();
-        var yours = data.yours[minute.timestamp];
+        var yours = data.yours && data.yours[minute.timestamp];
         var width = undefined, color = undefined;
         row += '<div class="minute' + (timestamp_minutes % 15 === 0 ? ' separator' : '') + (timestamp_minutes === 0 ? ' hour' : '') + '">\n';
         minute.stars.each(function(result, index) {
