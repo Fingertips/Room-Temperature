@@ -4,21 +4,24 @@ RT.delay = 60;
 
 RT.Updater = Class.create({
   initialize: function() {
-    this.form = $('vote').down('form');
-    this.progressBar = $('progress').down('div');
-    this.results = $('results');
-    this.yoursCount = 0;
-    this.request = false;
-    this.stars = new RT.Stars(this.form);
-    var standingUrl = this.form.getAttribute('action').split('/').slice(0, -1).concat('standing').join('/');
-    new Ajax.Request(standingUrl, {
-      method: 'GET',
-      onSuccess: function(response) {
-        this.render(response.responseText);
-        this.resetTimer();
-        new PeriodicalExecuter(this.updateTimer.bind(this), 1);
-      }.bind(this),
-    });
+    var vote = $('vote');
+    if (vote) {
+      this.form = vote.down('form');
+      this.progressBar = $('progress').down('div');
+      this.results = $('results');
+      this.yoursCount = 0;
+      this.request = false;
+      this.stars = new RT.Stars(this.form);
+      var standingUrl = this.form.getAttribute('action').split('/').slice(0, -1).concat('standing').join('/');
+      new Ajax.Request(standingUrl, {
+        method: 'GET',
+        onSuccess: function(response) {
+          this.render(response.responseText);
+          this.resetTimer();
+          new PeriodicalExecuter(this.updateTimer.bind(this), 1);
+        }.bind(this),
+      });
+    }
   },
   
   render: function(json) {
